@@ -2,9 +2,7 @@ Demo: Barometric sensor data (Temperature, Pressure and Altitude) and pressure a
 
   Using two topics for,
   
-    Data exchange
-    
-    Alarm range parameter configuration
+    1. Data exchange
     
           struct BMP_pressure {
                string id; //@key
@@ -13,6 +11,8 @@ Demo: Barometric sensor data (Temperature, Pressure and Altitude) and pressure a
                double Altitude; //in meter   
           };
           
+    2. Alarm range parameter configuration
+    
           struct BMP_pressure_range {
                string id1; //@key
                double Pressure_high; //in kPa 
