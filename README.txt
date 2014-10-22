@@ -1,8 +1,5 @@
 rticonnextdds-android-raspberrypi-demo
 ======================================
-
-DDS Android Application interacting with DDS application running on Raspberry Pi attached with various sensors (ultrasonic/barometric) and stepper motors
-
 What problem does it solve:
   
   Systems integration via platform agnostics.
