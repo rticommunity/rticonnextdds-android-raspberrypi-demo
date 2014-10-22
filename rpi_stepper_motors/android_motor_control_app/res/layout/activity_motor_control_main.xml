@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignTop="@+id/spinner3"
+        android:text="@string/textViewDirection"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        style="@style/AppBaseTheme"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner2"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:entries="@array/MotorID_arrays"
+        android:prompt="@string/MotorID_prompt" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/spinner1"
+        android:layout_marginRight="36dp"
+        android:layout_toLeftOf="@+id/spinner2"
+        android:text="@string/textViewMotorID"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/spinner1"
+        android:layout_marginTop="52dp"
+        android:text="@string/textViewDuration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        style="@style/AppBaseTheme"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnSubmit"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_marginLeft="18dp"
+        android:entries="@array/Duration_arrays"
+        android:prompt="@string/Duration_prompt" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        style="@style/AppBaseTheme"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner2"
+        android:layout_below="@+id/spinner2"
+        android:layout_marginTop="54dp"
+        android:entries="@array/Direction_arrays"
+        android:prompt="@string/Direction_prompt" />
+    
+    <Spinner
+        android:id="@+id/spinner4"
+        style="@style/AppBaseTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner3"
+        android:layout_alignRight="@+id/spinner1"
+        android:layout_below="@+id/spinner3"
+        android:layout_marginTop="60dp"
+        android:entries="@array/Speed_arrays"
+        android:prompt="@string/Speed_prompt" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignTop="@+id/spinner4"
+        android:text="@string/Speed"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner4"
+        android:layout_marginTop="39dp"
+        android:layout_toRightOf="@+id/TextView01"
+        android:text="@string/Timer"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        style="@style/AppBaseTheme"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView4"
+        android:layout_marginRight="208dp"
+        android:layout_marginTop="66dp"
+        android:text="@string/textViewStart" />
+ 
+</RelativeLayout>

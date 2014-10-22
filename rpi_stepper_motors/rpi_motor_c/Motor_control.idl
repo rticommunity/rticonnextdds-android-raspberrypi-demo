@@ -1,0 +1,12 @@
+ 
+struct MotorControl{
+    string<128> motor_id; 	//@key
+    			 	//@ID 0
+    long time_sec ;     	//@ID 1
+    string<5> direction;       //@ID 2 
+//clock or anti
+    long speed;    	       //@ID 3
+    string <5> action; 	      //@ID 4 
+//start or stop
+};
+//@Extensibility EXTENSIBLE_EXTENSIBILITY

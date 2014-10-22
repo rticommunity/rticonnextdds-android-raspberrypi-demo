@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">"Live Temperature, Pressure and Altitude over DDS"</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_section1">Temprature</string>
+    <string name="title_section2">Pressure</string>
+    <string name="title_section3">Altitude</string>
+    
+    <string name="chart1">Temperature</string>
+    <string name="chart2">Pressure</string>
+    <string name="chart3">Altitude</string>
+    
+     <string name="ZoomTemperature">ZoomTemperature</string>
+     <string name="ZoomPressure">ZoomPressure</string>
+     <string name="ZoomAltitude">ZoomAltitude</string>
+     
+      <string name="zoom_in1">zoom_in</string>
+     <string name="zoom_reset1">zoom_reset</string>
+     <string name="zoom_out1">zoom_out</string>
+      
+      <string name="zoom_in2">zoom_in</string>
+     <string name="zoom_reset2">zoom_reset</string>
+     <string name="zoom_out2">zoom_out</string>
+     
+      <string name="zoom_in3">zoom_in</string>
+     <string name="zoom_reset3">zoom_reset</string>
+     <string name="zoom_out3">zoom_out</string>
+
+    <string name="desc">Images</string>
+
+</resources>

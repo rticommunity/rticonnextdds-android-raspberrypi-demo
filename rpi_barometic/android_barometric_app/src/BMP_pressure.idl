@@ -1,0 +1,6 @@
+struct BMP_pressure { 
+string<64> id; //@key
+double Temperature; //in C
+double Pressure;    //in kPa
+double Altitude;    //in meter
+};
