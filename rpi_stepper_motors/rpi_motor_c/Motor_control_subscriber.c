@@ -68,9 +68,6 @@
 int volatile mDirection = 0;
 int volatile mSpeed = 0;
 int volatile mStart = 1;
-//int volatile mStartA=1;
-//int volatile mStartB=1;
-//int volatile mStartC=1;
 int volatile mMotorId = 4;
 int volatile mTimeSec_t = 3;
 int mTimeSec = 3;
@@ -105,9 +102,8 @@ void InitMutexB() {
 }
 
 
-//int th_count=0;
-
-///// Motor Code Start/////
+ 
+/**************Motor Code Start************/
 
 // General purpose error message
 // A real system would probably have a better error handling method...
@@ -190,31 +186,30 @@ static void sleep_until(struct timespec *ts, int delay) {
 	clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, ts, NULL);
 }
 
-// Demo program for running a stepper connected to the Raspberry PI
-// platform.
-//# Motor definitions
-//motora = Motor(17,18,27,22)
-//motorb = Motor(4,25,24,23)
+/*****
+ * Demo program for running a stepper connected to the Raspberry PI
+platform.
+# Motor definitions
+  motora = Motor(17,18,27,22)
+  motorb = Motor(4,25,24,23)
 
-//Physical pins 11, 12, 13, 15 for Motor A
-//Physical pins 16, 18, 22, 7 for Motor B
+  Physical pins 11, 12, 13, 15 for Motor A
+  Physical pins 16, 18, 22, 7 for Motor B
+********/
 
-//void *Motor_B(void *delay_sec, char direction)
 void *Motor_B(void *delay_sec) {
 
 	pthread_mutex_lock(&mutexB);
 
 	fflush(stdout);
 
-	//unsigned int delay = 1000 * 1000; // Note: Delay in ns/ i.e, 1mili sec
-	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
+ 	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
 
 	struct timespec ts;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 	//range of speed is .9mil sec to 9 mils
 
 
-	//printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
 	time_t start_time;
 	time_t current_time;
 
@@ -253,11 +248,11 @@ void *Motor_B(void *delay_sec) {
 		pin3_b = init_gpio(23);
 	}
 
-
+/ * Few Temp variables to hold old valuse before entering in While loop*/
 	int mDirection_t = mDirection;
 	int mDuration_t = mTimeSec_t;
 	int mSpeed_t = mSpeed;
-	//	int sec_t_t = mTimeSec;
+ 
 	while (mStart == 0) {
 
 		if (mMotorId == 1) {
@@ -268,9 +263,7 @@ void *Motor_B(void *delay_sec) {
 		}
 
 		delay = mSpeed * 1000000;
-
-		//sleep_until(&ts, delay);
-
+ 
 		setiopin(pin0_b, 1);
 		sleep_until(&ts, delay);
 
@@ -334,22 +327,18 @@ void *Motor_B(void *delay_sec) {
  pthread_exit(Motor_B);
 	return NULL;
 }
-
-//void *Motor_A(void *delay_sec, char direction)
+ 
+ 
 void *Motor_A(void *delay_sec) {
 
 	pthread_mutex_lock(&mutexA);
 
 	fflush(stdout);
 
-	//unsigned int delay = 1000 * 1000; // Note: Delay in ns
-	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
+ 	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
 	struct timespec ts;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 
-
-
-	//printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
 	time_t start_time;
 	time_t current_time;
 
@@ -394,9 +383,9 @@ void *Motor_A(void *delay_sec) {
 	}
 
 	int mDirection_t = mDirection;
-
  	int mDuration_t = mTimeSec_t;
 	int mSpeed_t = mSpeed;
+	
 	while (mStart == 0) {
 		if (mMotorId == 2) {
 
@@ -409,7 +398,6 @@ void *Motor_A(void *delay_sec) {
 
 		delay = mSpeed * 1000000;
 
-		//sleep_until(&ts, delay);
 
 		setiopin(pin0_a, 1);
 		sleep_until(&ts, delay);
