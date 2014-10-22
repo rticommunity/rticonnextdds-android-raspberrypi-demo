@@ -1,0 +1,10 @@
+struct ShapeType{
+    string<128> color; //@key
+    //@ID 0
+    long x;    //@ID 1
+    long y;    //@ID 2
+    long shapesize;    //@ID 3
+};
+//@Extensibility EXTENSIBLE_EXTENSIBILITY
+
+

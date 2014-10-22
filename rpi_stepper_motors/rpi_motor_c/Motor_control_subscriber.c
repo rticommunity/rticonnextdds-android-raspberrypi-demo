@@ -1,15 +1,3 @@
-/*******************************************************************************
- (c) 2005-2014 Copyright, Real-Time Innovations, Inc.  All rights reserved.
- RTI grants Licensee a license to use, modify, compile, and create derivative
- works of the Software.  Licensee has the right to distribute object form only
- for use with RTI products.  The Software is provided "as is", with no warranty
- of any type, including any warranty for fitness for any purpose. RTI is under
- no obligation to maintain or support the Software.  RTI shall not be liable for
- any incidental or consequential damages arising out of the use or inability to
- use the software.
- ******************************************************************************/
-
-
 /* Motor_control_subscriber.c
 
  A subscription example
@@ -35,11 +23,11 @@
  (4) [Optional] Specify the list of discovery initial peers and 
  multicast receive addresses via an environment variable or a file 
  (in the current working directory) called NDDS_DISCOVERY_PEERS. 
- 
+
  You can run any number of publishers and subscribers programs, and can 
  add and remove them dynamically from the domain.
- 
- 
+
+
  Example:
 
  To run the example application on domain <domain_id>:
@@ -48,13 +36,13 @@
 
  objs/<arch>/Motor_control_publisher <domain_id> 
  objs/<arch>/Motor_control_subscriber <domain_id> 
- 
+
  On Windows systems:
 
  objs\<arch>\Motor_control_publisher <domain_id>  
  objs\<arch>\Motor_control_subscriber <domain_id>   
- 
- 
+
+
  modification history
  ------------ -------       
  */
@@ -77,8 +65,47 @@
 #include <signal.h>
 #include <unistd.h>
 
-int volatile mDirection=0;
-int volatile mSpeed=0;
+int volatile mDirection = 0;
+int volatile mSpeed = 0;
+int volatile mStart = 1;
+//int volatile mStartA=1;
+//int volatile mStartB=1;
+//int volatile mStartC=1;
+int volatile mMotorId = 4;
+int volatile mTimeSec_t = 3;
+int mTimeSec = 3;
+
+FILE *pin0_a;
+FILE *pin1_a;
+FILE *pin2_a;
+FILE *pin3_a;
+
+FILE *pin0_b;
+FILE *pin1_b;
+FILE *pin2_b;
+FILE *pin3_b;
+
+//struct timespec mts = { 0, 0 };
+
+pthread_mutex_t mutexA;
+pthread_mutex_t mutexB;
+
+void  InitMutexA() {
+	if(pthread_mutex_init(&mutexA, NULL) != 0) {
+		 printf("\n mutexA init failed\n");
+		        return 1;
+	}
+}
+void InitMutexB() {
+	if(pthread_mutex_init(&mutexB, NULL) != 0) {
+		 printf("\n mutexB init failed\n");
+				        return 1;
+	}
+
+}
+
+
+//int th_count=0;
 
 ///// Motor Code Start/////
 
@@ -92,6 +119,7 @@ static void panic(char *message) {
 #define MAX_LOGENTRIES 200000
 static unsigned int logindex;
 static struct timespec timestamps[MAX_LOGENTRIES];
+
 static void logtimestamp(void) {
 	clock_gettime(CLOCK_MONOTONIC, &timestamps[logindex++]);
 	if (logindex > MAX_LOGENTRIES) {
@@ -172,121 +200,162 @@ static void sleep_until(struct timespec *ts, int delay) {
 //Physical pins 16, 18, 22, 7 for Motor B
 
 //void *Motor_B(void *delay_sec, char direction)
-void *Motor_B(void *delay_sec )
-{
-	 	fflush(stdout);
+void *Motor_B(void *delay_sec) {
+
+	pthread_mutex_lock(&mutexB);
+
+	fflush(stdout);
+
+	//unsigned int delay = 1000 * 1000; // Note: Delay in ns/ i.e, 1mili sec
+	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
 
 	struct timespec ts;
-	//unsigned int delay = 1000 * 1000; // Note: Delay in ns/ i.e, 1mili sec
-	unsigned int delay = mSpeed*1000000; // Note: Delay in ns i.e.,
-
+	clock_gettime(CLOCK_MONOTONIC, &ts);
 	//range of speed is .9mil sec to 9 mils
 
-	clock_gettime(CLOCK_MONOTONIC, &ts);
 
-		//int sec=(int)&delay_sec;
-		int sec_t = *(int *) delay_sec;
-
-	FILE *pin0_b;
-	FILE *pin1_b;
-	FILE *pin2_b;
-	FILE *pin3_b;
-
-	if (mDirection == 0){
-		/*Clock wise*/
-		  	  pin0_b = init_gpio(4);
-			  pin1_b = init_gpio(25);
-			  pin2_b = init_gpio(24);
-			  pin3_b = init_gpio(23);
-	}
-	if (mDirection == 1){
-		/*Anti-Clock wise*/
-		  pin0_b = init_gpio(23);
-		  pin1_b = init_gpio(24);
-		  pin2_b = init_gpio(25);
-		  pin3_b = init_gpio(4);
-	}
-
-	if (mDirection == 2)
-		{
-		/*Anti-Clock wise*/
-		  pin0_b = init_gpio(23);
-		  pin1_b = init_gpio(24);
-		  pin2_b = init_gpio(25);
-		  pin3_b = init_gpio(4);
-	}
-
-
-	printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
-
+	//printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
 	time_t start_time;
 	time_t current_time;
 
 	start_time = time(NULL);
 	current_time = time(NULL);
-	printf("Start Motor_B for %d \n", sec_t);
+	printf("Start Motor_B for %d \n", mTimeSec_t);
 
-
-	clock_gettime(CLOCK_MONOTONIC, &ts);
-
-  	while (current_time < start_time + sec_t) {
-  		sleep_until(&ts, delay);
-			//logtimestamp();
-			setiopin(pin0_b, 1);
-			sleep_until(&ts, delay);
-			//logtimestamp();
-			setiopin(pin3_b, 0);
-			sleep_until(&ts, delay);
-			//logtimestamp();
-			setiopin(pin1_b, 1);
-			sleep_until(&ts, delay);
-		//	logtimestamp();
-			setiopin(pin0_b, 0);
-			sleep_until(&ts, delay);
-		//	logtimestamp();
-			setiopin(pin2_b, 1);
-			sleep_until(&ts, delay);
-		//	logtimestamp();
-			setiopin(pin1_b, 0);
-			sleep_until(&ts, delay);
-		//	logtimestamp();
-			setiopin(pin3_b, 1);
-			sleep_until(&ts, delay);
-		//	logtimestamp();
-			setiopin(pin2_b, 0);
-
-		current_time = time(NULL);
+	if (mDirection == 0) {
+		/*Clock wise*/
+		pin0_b = init_gpio(4);
+		pin1_b = init_gpio(25);
+		pin2_b = init_gpio(24);
+		pin3_b = init_gpio(23);
+	}
+	if (mDirection == 1) {
+		/*Anti-Clock wise*/
+		pin0_b = init_gpio(23);
+		pin1_b = init_gpio(24);
+		pin2_b = init_gpio(25);
+		pin3_b = init_gpio(4);
 	}
 
- 	setiopin(pin0_b, 0);
+	if (mDirection == 2) {
+		/*Anti-Clock wise*/
+		pin0_b = init_gpio(23);
+		pin1_b = init_gpio(24);
+		pin2_b = init_gpio(25);
+		pin3_b = init_gpio(4);
+	}
+
+	if (mDirection == 3) {
+		/*Clock wise*/
+		pin0_b = init_gpio(4);
+		pin1_b = init_gpio(25);
+		pin2_b = init_gpio(24);
+		pin3_b = init_gpio(23);
+	}
+
+
+	int mDirection_t = mDirection;
+	int mDuration_t = mTimeSec_t;
+	int mSpeed_t = mSpeed;
+	//	int sec_t_t = mTimeSec;
+	while (mStart == 0) {
+
+		if (mMotorId == 1) {
+			goto end;
+		}
+		if( (mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed) ) {
+			goto end;
+		}
+
+		delay = mSpeed * 1000000;
+
+		//sleep_until(&ts, delay);
+
+		setiopin(pin0_b, 1);
+		sleep_until(&ts, delay);
+
+		setiopin(pin3_b, 0);
+		sleep_until(&ts, delay);
+
+		setiopin(pin1_b, 1);
+		sleep_until(&ts, delay);
+
+		setiopin(pin0_b, 0);
+		sleep_until(&ts, delay);
+
+		setiopin(pin2_b, 1);
+		sleep_until(&ts, delay);
+
+		setiopin(pin1_b, 0);
+		sleep_until(&ts, delay);
+
+		setiopin(pin3_b, 1);
+		sleep_until(&ts, delay);
+
+		setiopin(pin2_b, 0);
+		sleep_until(&ts, delay);
+
+		current_time = time(NULL);
+
+
+
+	if (current_time <= start_time + mTimeSec_t) {
+			continue;
+		} else {
+			goto end;
+		}
+
+		if (mMotorId == 2 || mMotorId == 3) {
+			continue;
+		} else {
+			goto end;
+		}
+
+		if (mDirection_t == mDirection) {
+			continue;
+		} else {
+			goto end;
+		}
+
+	}
+
+	end:
+
+	setiopin(pin0_b, 0);
 	setiopin(pin1_b, 0);
 	setiopin(pin2_b, 0);
 	setiopin(pin3_b, 0);
 
-	pthread_exit(NULL);
+
+	pthread_mutex_unlock(&mutexB);
+	pthread_mutex_destroy(&mutexB);
+//	pthread_exit(NULL);
+
+ pthread_exit(Motor_B);
 	return NULL;
 }
 
 //void *Motor_A(void *delay_sec, char direction)
-void *Motor_A(void *delay_sec )
-{
+void *Motor_A(void *delay_sec) {
+
+	pthread_mutex_lock(&mutexA);
 
 	fflush(stdout);
 
-	struct timespec ts;
 	//unsigned int delay = 1000 * 1000; // Note: Delay in ns
-	unsigned int delay = mSpeed*1000000; // Note: Delay in ns i.e.,
-
+	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
+	struct timespec ts;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 
-	//int sec=(int)&delay_sec;
-	int sec_t = *(int *) delay_sec;
 
 
-	FILE *pin0_a ;
-	FILE *pin1_a ;
-	FILE *pin2_a  ;
-	FILE *pin3_a  ;
+	//printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
+	time_t start_time;
+	time_t current_time;
+
+	start_time = time(NULL);
+	current_time = time(NULL);
+	printf("Start Motor_A for %d \n", mTimeSec);
 
 	if (mDirection == 0) {
 		/*Clock*/
@@ -294,74 +363,119 @@ void *Motor_A(void *delay_sec )
 		pin1_a = init_gpio(27);
 		pin2_a = init_gpio(18);
 		pin3_a = init_gpio(17);
+
 	}
 
-	if (mDirection == 1)
-		{
+	if (mDirection == 1) {
+		/*Anti Clock*/
 		pin0_a = init_gpio(17);
 		pin1_a = init_gpio(18);
 		pin2_a = init_gpio(27);
 		pin3_a = init_gpio(22);
+
 	}
 
-	if (mDirection == 2)
-		{
+	if (mDirection == 2) {
 		/*Clock*/
-			pin0_a = init_gpio(22);
-			pin1_a = init_gpio(27);
-			pin2_a = init_gpio(18);
-			pin3_a = init_gpio(17);
+		pin0_a = init_gpio(22);
+		pin1_a = init_gpio(27);
+		pin2_a = init_gpio(18);
+		pin3_a = init_gpio(17);
+
 	}
 
-printf("(int)&delay_sec %d, mDirection=%d \n",  *(int *)delay_sec, mDirection);
+	if (mDirection == 3) {
+		/*Anti Clock*/
+		pin0_a = init_gpio(17);
+		pin1_a = init_gpio(18);
+		pin2_a = init_gpio(27);
+		pin3_a = init_gpio(22);
 
-	time_t start_time;
-	time_t current_time;
+	}
 
-	start_time = time(NULL);
-	current_time = time(NULL);
-	printf("Start Motor_A for %d \n", sec_t);
+	int mDirection_t = mDirection;
 
-	while (current_time < start_time + sec_t) {
+ 	int mDuration_t = mTimeSec_t;
+	int mSpeed_t = mSpeed;
+	while (mStart == 0) {
+		if (mMotorId == 2) {
 
-		sleep_until(&ts, delay);
-		//logtimestamp();
+			goto end;
+		}
+		if( (mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed) ) {
+			goto end;
+		}
+
+
+		delay = mSpeed * 1000000;
+
+		//sleep_until(&ts, delay);
+
 		setiopin(pin0_a, 1);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin3_a, 0);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin1_a, 1);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin0_a, 0);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin2_a, 1);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin1_a, 0);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin3_a, 1);
 		sleep_until(&ts, delay);
-		//logtimestamp();
+
 		setiopin(pin2_a, 0);
+		sleep_until(&ts, delay);
+
 
 		current_time = time(NULL);
 
+
+		if (current_time <= start_time + mTimeSec_t) {
+			continue;
+		} else {
+			goto end;
+		}
+
+		if (mMotorId == 1 || mMotorId == 3) {
+			continue;
+		} else {
+			goto end;
+		}
+
+		if (mDirection_t == mDirection) {
+			continue;
+		} else {
+			goto end;
+
+		}
+
 	}
+
+	end:
 
 	setiopin(pin0_a, 0);
 	setiopin(pin1_a, 0);
 	setiopin(pin2_a, 0);
 	setiopin(pin3_a, 0);
 
-	pthread_exit(NULL);
-	return NULL;
-}
+	pthread_mutex_unlock(&mutexA);
+	pthread_mutex_destroy(&mutexA);
+	pthread_exit(Motor_A);
+	//pthread_exit(NULL);
 
+
+	return NULL;
+
+}
 
 /* Delete all entities */
 static int subscriber_shutdown(DDS_DomainParticipant *participant) {
@@ -408,6 +522,9 @@ static int subscriber_main(int domainId, int sample_count) {
 	DDS_ReturnCode_t retcode;
 	const char *type_name = NULL;
 	int count = 0;
+
+	//pthread_t motor_a;
+	//pthread_t motor_b;
 
 	DDS_StatusCondition *status_condition;
 	DDS_WaitSet *waitset = NULL;
@@ -456,7 +573,6 @@ static int subscriber_main(int domainId, int sample_count) {
 		subscriber_shutdown(participant);
 		return -1;
 	}
-
 
 	/* To customize data reader QoS, use 
 	 the configuration file USER_QOS_PROFILES.xml */
@@ -510,8 +626,10 @@ static int subscriber_main(int domainId, int sample_count) {
 	}
 
 
-	//struct MotorControl_T MotorControl_t[1];
-	int rc;
+	int rcA;
+	int rcB;
+
+
 	/* Main loop */
 	for (count = 0; (sample_count == 0) || (count < sample_count); ++count) {
 		struct DDS_ConditionSeq active_conditions = DDS_SEQUENCE_INITIALIZER;
@@ -558,83 +676,127 @@ static int subscriber_main(int domainId, int sample_count) {
 							continue;
 						}
 
-						struct MotorControl *sample_t=  MotorControlSeq_get_reference(&data_seq, j);
+						struct MotorControl *sample_t =
+								MotorControlSeq_get_reference(&data_seq, j);
+
+						printf("%s %d %s %d %s\n", sample_t->motor_id,
+								sample_t->time_sec, sample_t->direction,
+								sample_t->speed, sample_t->action);
+						//  struct timespec ts1;
+
+						//clock_gettime(CLOCK_MONOTONIC, &ts1);
+
+						// sleep_until(&ts1, 10);
+
+						mMotorId = atoi(sample_t->motor_id);
+						mTimeSec_t = mTimeSec = sample_t->time_sec;
+
+						mDirection = atoi(sample_t->direction);
+						mSpeed = sample_t->speed;
+						mStart = atoi(sample_t->action);
 
 
-						printf("%s %d %s %d %s\n",
-								sample_t->motor_id,
-								sample_t->time_sec,
-								sample_t->direction,
-								sample_t->speed,
-								sample_t->action);
 
-						int input1 = atoi(sample_t->motor_id);
-						int input2 =  sample_t->time_sec;
-					    mDirection = atoi(sample_t->direction);
-					    mSpeed= sample_t->speed;
+						printf(
+								"Selection: Motor %d for sec %d, direction=%d, Speed=%d,  mStart=%d\n",
+								mMotorId, mTimeSec, mDirection, mSpeed, mStart);
 
-						printf("Selection: Motor %d for sec %d, direction=%d, Speed=%d\n", input1, input2, mDirection, mSpeed);
+						// printf("th_count=%d\n", th_count);
+						// th_count=0;
+						if (mMotorId == 1) {
+							if (mDirection == 2) {
+								//make inwards to Anti-clock
+								mDirection = 1;
+							}
+							if (mDirection == 3) {
+								//make outwards to clock
+								mDirection = 0;
+							}
+							pthread_t motor_a;
 
-						signal(SIGINT, dumptimestamps);
+
+							InitMutexA();
 
 
-if(input1==1)
-{
-	if(mDirection==2){
-		mDirection=1;
-	}
-	pthread_t motor_a;
-						pthread_create(&motor_a, NULL, Motor_A, &input2);
-							if (rc) {
-								printf("ERROR; return code from pthread_create() is %d\n", rc);
+							rcA = pthread_create(&motor_a, NULL, Motor_A,
+									&mTimeSec);
+							if (rcA) {
+								printf(
+										"ERROR; return code from pthread_create() is %d\n",
+										rcA);
+								exit(-1);
+							}
+							// pthread_join(motor_a, NULL);
+							pthread_detach(motor_a);
+
+						}
+
+						if (mMotorId == 2) {
+							if (mDirection == 2) {
+								mDirection = 1;
+							}
+							if (mDirection == 3) {
+								//make outwards to clock
+								mDirection = 0;
+							}
+							pthread_t motor_b;
+							InitMutexB();
+
+
+							rcB = pthread_create(&motor_b, NULL, Motor_B,
+									&mTimeSec);
+							if (rcB) {
+								printf(
+										"ERROR; return code from pthread_create() is %d\n",
+										rcB);
 								exit(-1);
 							}
 
-							pthread_join(motor_a, NULL);
-}
+							// pthread_join(motor_b, NULL);
+							pthread_detach(motor_b);
 
-else if(input1==2)
-{
-	if(mDirection==2){
-		mDirection=1;
-	}
-	pthread_t motor_b;
-						pthread_create(&motor_b, NULL, Motor_B, &input2);
-							if (rc) {
-								printf("ERROR; return code from pthread_create() is %d\n", rc);
+
+						}
+
+						if (mMotorId == 3)
+
+						{
+							InitMutexA();
+							InitMutexB();
+							pthread_t motor_a, motor_b;
+
+
+
+							rcA = pthread_create(&motor_a, NULL, Motor_A,
+									&mTimeSec);
+							if (rcA) {
+								printf(
+										"ERROR; return code from pthread_create() is %d\n",
+										rcA);
 								exit(-1);
 							}
 
-							pthread_join(motor_b, NULL);
-}
-
-else if(input1==3)
-{
-
-	pthread_t motor_a, motor_b;
-						pthread_create(&motor_a, NULL, Motor_A, &input2);
-							if (rc) {
-								printf("ERROR; return code from pthread_create() is %d\n", rc);
+							rcB = pthread_create(&motor_b, NULL, Motor_B,
+									&mTimeSec);
+							if (rcB) {
+								printf(
+										"ERROR; return code from pthread_create() is %d\n",
+										rcB);
 								exit(-1);
 							}
 
-							pthread_create(&motor_b, NULL, Motor_B, &input2);
-													if (rc) {
-														printf("ERROR; return code from pthread_create() is %d\n", rc);
-														exit(-1);
-													}
+							pthread_detach(motor_a);
+							pthread_detach(motor_b);
+							//pthread_join(motor_a, NULL);
+							//pthread_join(motor_b, NULL);
 
-						    pthread_join(motor_a, NULL);
-							pthread_join(motor_b, NULL);
-}
-else {
-	continue;
-}
- 			/*
+						}
+						/*
 						 MotorControlTypeSupport_print_data(
 						 MotorControlSeq_get_reference(&data_seq, j));
 
 						 */
+						continue;
 					}
 
 					retcode = MotorControlDataReader_return_loan(
@@ -649,6 +811,8 @@ else {
 		}
 	}
 
+	pthread_exit(Motor_A);
+	pthread_exit(Motor_B);
 	/* Delete all entities */
 	retcode = DDS_WaitSet_delete(waitset);
 	if (retcode != DDS_RETCODE_OK) {
@@ -718,4 +882,3 @@ void usrAppInit ()
 
 }
 #endif
-
