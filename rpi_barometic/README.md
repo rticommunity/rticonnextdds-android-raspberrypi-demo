@@ -1,7 +1,9 @@
 Demo: Barometric sensor data (Temperature, Pressure and Altitude) and pressure alarm range configuration
 
-  Using two topics for
-    Data exchange 
+  Using two topics for,
+  
+    Data exchange
+    
     Alarm range parameter configuration
     
           struct BMP_pressure {
@@ -18,9 +20,14 @@ Demo: Barometric sensor data (Temperature, Pressure and Altitude) and pressure a
           };
 
   Real-time data visualization on Android application
+  
     Reading data using Wait-Set
-    Default QoS "BuiltinQosLibExp::Generic.StrictReliable.LowLatency "
+    
+    Default QoS "BuiltinQosLibExp::Generic.StrictReliable.LowLatency"
 
   Pressure Range (high and low) alarm configuration
+  
     Reading data using Polling
+    
     Default QoS "BuiltinQosLibExp::Pattern.Event"
+    
