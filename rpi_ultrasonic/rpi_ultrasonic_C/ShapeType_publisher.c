@@ -208,49 +208,30 @@ static int publisher_main(int domainId, int sample_count)
               int shapesize =80;
               int center = 70;
               int radius = 70;
+              float distance;
               instance->color="RED";
                
-    /* Main loop */
-   //for (count=0; (sample_count == 0) || (count < sample_count); ++count) {
-
-   //     printf("Writing ShapeType, count %d\n", count);
-
         /* Modify the data to be written here */
  
               
    while(1) {
-  // usleep(1000 * 100);
-  int cost = readSensor(TRIGGER_PIN1, ECHO_PIN1);
-  float distance = ((double)cost) * 343 / 2 / 10000;
- 	distance *=3.0;
+   	/* Reading sensor data*/
+    int cost = readSensor(TRIGGER_PIN1, ECHO_PIN1);
    
-/*
-    int x[10]={0};
-    int count=1;
-    int avg=0;
-   while(count != 11){
-   avg=x[count-1] + cost;
-	count++;   
-   }
-   cost=avg/10;
-   */
    
-              // printf("Time: %dus\n", cost);
-       if (cost > 0) {
+         if (cost > 0) {
+         	 distance = ((double)cost) * 343 / 2 / 10000;
+    		 distance *=3.0;
+ 
             //printf("Time: %dus\tDistance: %.1fcm\n", cost, distance);
              instance->shapesize=  distance;            
-	     instance->x = 125; // - instance->shapesize/2.0;
-	
-//instance->x = center + ((double)cost) * 29.1 / 2 ;
-                    
+	     instance->y=instance->x = 125;  
+ 
        } else {
            fprintf(stderr, "Failed to fire Sensor HY-SRF05.\n");
        }
- 	instance->y = 125; // - instance->shapesize/2.0;
-//                instance->y = center; 
-
-           //} 
-            
+ 	
+              
 
         /* Write data */
         retcode = ShapeTypeDataWriter_write(
