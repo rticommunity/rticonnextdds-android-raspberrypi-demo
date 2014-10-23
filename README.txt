@@ -1,4 +1,6 @@
-rticonnextdds-android-raspberrypi-demo
+rticonnextdds-android-raspberrypi-demo 
+http://community.rti.com/howto/rti-connext-dds-android-raspberry-pi-demos
+
 ======================================
 What problem does it solve:
   
