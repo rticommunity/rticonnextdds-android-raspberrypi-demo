@@ -2,8 +2,7 @@ rticonnextdds-android-raspberrypi-demo
 ======================================
 What problem does it solve:
   
-  1. Systems integration via platform agnostics, a process of bringing together discrete systems utilizing a variety of techniques and component subsystems, and ensuring
-      that the subsystems function together as a single system.
+  1. Systems integration via platform agnostics 
   
   2. Demonstrates systems integration and platform agnostics by linking together,
       a. Different computing systems (CPU+OS) and,
