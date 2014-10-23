@@ -522,9 +522,7 @@ static int subscriber_main(int domainId, int sample_count) {
 	DDS_ReturnCode_t retcode;
 	const char *type_name = NULL;
 	int count = 0;
-
-	//pthread_t motor_a;
-	//pthread_t motor_b;
+ 
 
 	DDS_StatusCondition *status_condition;
 	DDS_WaitSet *waitset = NULL;
@@ -682,12 +680,7 @@ static int subscriber_main(int domainId, int sample_count) {
 						printf("%s %d %s %d %s\n", sample_t->motor_id,
 								sample_t->time_sec, sample_t->direction,
 								sample_t->speed, sample_t->action);
-						//  struct timespec ts1;
-
-						//clock_gettime(CLOCK_MONOTONIC, &ts1);
-
-						// sleep_until(&ts1, 10);
-
+			 
 						mMotorId = atoi(sample_t->motor_id);
 						mTimeSec_t = mTimeSec = sample_t->time_sec;
 
@@ -701,9 +694,7 @@ static int subscriber_main(int domainId, int sample_count) {
 								"Selection: Motor %d for sec %d, direction=%d, Speed=%d,  mStart=%d\n",
 								mMotorId, mTimeSec, mDirection, mSpeed, mStart);
 
-						// printf("th_count=%d\n", th_count);
-						// th_count=0;
-						if (mMotorId == 1) {
+			 			if (mMotorId == 1) {
 							if (mDirection == 2) {
 								//make inwards to Anti-clock
 								mDirection = 1;
