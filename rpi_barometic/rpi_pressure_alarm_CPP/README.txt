@@ -7,7 +7,7 @@ Follow the same procedure to generate the code and build the examples. As we alr
 
 	rtiddsgen -language C++ BMP_temp_pressure.idl
 
-To Run the Alarm configure appication
+To Run the Alarm configuration appication
  1. On one terminal run BMP_temp_pressure_publisher application 
 
   ./objs/armv6vfphLinux3.xgcc4.7.2/BMP_temp_pressure_publisher 
