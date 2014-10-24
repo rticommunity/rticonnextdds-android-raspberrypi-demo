@@ -77,7 +77,6 @@ pthread_mutex_t mutexAplay;
 void InitMutexAplay() {
 	if (pthread_mutex_init(&mutexAplay, NULL) != 0) {
 		printf("\n mutexAplay init failed\n");
-		return 1;
 	}
 }
 
