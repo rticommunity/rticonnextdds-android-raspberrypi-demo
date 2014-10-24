@@ -19,7 +19,6 @@
 
 package info.rti.tabsswipe;
 
-
 import info.rti.example.liveTemp.R;
 
 import java.text.DecimalFormat;
@@ -50,127 +49,124 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-  
- public  class TemperatureFragment extends Fragment implements OnClickListener {
+public class TemperatureFragment extends Fragment implements OnClickListener {
 
+	private static final String TIME = "H:mm:ss";
+	private static final String[] ITEMS = { "A", "B", "C", "D", "E", "F" };
 
- 	private static final String TIME = "H:mm:ss";
- 	private static final String[] ITEMS = { "A", "B", "C", "D", "E", "F" };
-  
- 	private final int[] COLORS =  {Color.RED, Color.YELLOW, Color.CYAN, Color.GREEN,  };
- 	 
- 	private static final int[] THRESHOLD_VALUES = {10,25,40};
- 	private double mYAxisMin = 10;
- 	private double mYAxisMax = 40;
- 	
- 	private static final int[] THRESHOLD_COLORS = { Color.RED, Color.GREEN, Color.YELLOW  };
- 	private static final String[] THRESHOLD_LABELS = { "Cold", "Normal", "Hot" };
+	private final int[] COLORS = { Color.RED, Color.YELLOW, Color.CYAN,
+			Color.GREEN, };
 
- 	private static final int TEN_SEC = 10000;
- 	private static final int TWO_SEC = 2000;
- 	private View mViewZoomIn1;
- 	private View mViewZoomOut1;
- 	private View mViewZoomReset1;
- 	private GraphicalView mChartView;
- 	private XYSeriesRenderer[] mThresholdRenderers;
- 	private XYMultipleSeriesRenderer mRenderer;
- 	private XYMultipleSeriesDataset mDataset;
- 	private HashMap<String, TimeSeries> mSeries;
- 	private TimeSeries[] mThresholds;
- 	private ArrayList<String> mItems;
- 	
- 	private double mZoomLevel = 1;
- 	private double mLastItemChange;
- 	private int mItemIndex=5;
- 	private int mYAxisPadding = 9;
+	private static final int[] THRESHOLD_VALUES = { 10, 25, 40 };
+	private double mYAxisMin = 10;
+	private double mYAxisMax = 40;
 
-   	
-	
- 	//Log.d(TAG,"mId: = " + mId);
-	
- 	//System.out.println("mId : "+ mId);
- 	//System.out.println("mTemperature: " + mTemperature);	
- 	//System.out.println("mPressure: " + mPressure);
- 	//System.out.println("mAltitude: " + mAltitude);
-   
- 	private final CountDownTimer mTimer = new CountDownTimer(15 * 60 * 1000, 10) {
- 		@Override
- 		public void onTick(final long millisUntilFinished) {		
- 			addValue();    
- 		}
+	private static final int[] THRESHOLD_COLORS = { Color.RED, Color.GREEN,
+			Color.YELLOW };
+	private static final String[] THRESHOLD_LABELS = { "Cold", "Normal", "Hot" };
 
- 		@Override
- 		public void onFinish() {}
- 	};
+	private static final int TEN_SEC = 10000;
+	private static final int TWO_SEC = 2000;
+	private View mViewZoomIn1;
+	private View mViewZoomOut1;
+	private View mViewZoomReset1;
+	private GraphicalView mChartView;
+	private XYSeriesRenderer[] mThresholdRenderers;
+	private XYMultipleSeriesRenderer mRenderer;
+	private XYMultipleSeriesDataset mDataset;
+	private HashMap<String, TimeSeries> mSeries;
+	private TimeSeries[] mThresholds;
+	private ArrayList<String> mItems;
 
- 	
- 	final ZoomListener mZoomListener1 = new ZoomListener() {
-	 		@Override
-	 		public void zoomReset() {
-	 			mZoomLevel = 1;
-	 			scrollGraph(new Date().getTime());
-	 		}
+	private double mZoomLevel = 1;
+	private double mLastItemChange;
+	private int mItemIndex = 5;
+	private int mYAxisPadding = 9;
 
-	 		@Override
-	 		public void zoomApplied(final ZoomEvent event) {
-	 			if (event.isZoomIn()) {
-	 				mZoomLevel /= 2;
-	 			}
-	 			else {
-	 				mZoomLevel *= 2;
-	 			}
-	 			scrollGraph(new Date().getTime());
-	 		}
-	 	};
+	// Log.d(TAG,"mId: = " + mId);
 
- 	@Override
- 	public void onCreate(final Bundle savedInstanceState) {
- 		super.onCreate(savedInstanceState);
- 	
- 	    
- 		mItems = new ArrayList<String>();
- 		mSeries = new HashMap<String, TimeSeries>();
- 		mDataset = new XYMultipleSeriesDataset();
- 		mRenderer = new XYMultipleSeriesRenderer();
- 
- 		mRenderer.setAxisTitleTextSize(24);
- 		mRenderer.setChartTitleTextSize(28);
- 		mRenderer.setLabelsTextSize(22);
- 		mRenderer.setLegendTextSize(22);
- 		mRenderer.setPointSize(8f);
-  		mYAxisPadding = 9;
- 		mRenderer.setXLabelsAlign(Align.CENTER);
- 		mRenderer.setYLabelsAlign(Align.CENTER);
- 
-  	 
- 	DecimalFormat newFormat = new DecimalFormat("#.###");
-	double mAltitude_t =  Double.valueOf(newFormat.format( BMP_pressureSubscriber.mAltitude));
-	 
-	mRenderer.setChartTitle("Live Temperature from RaspberryPi (" +  BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) " +  "\n" +
-		 		"at Pressure " +  BMP_pressureSubscriber.mPressure + "kPa and Altitude " + mAltitude_t + " meter" );
- 	 	   
- 		mRenderer.setXTitle("In Real Time...");
- 		mRenderer.setYTitle("Temperature (degree Celsius)");
- 		mRenderer.setLabelsColor(Color.LTGRAY);
- 		mRenderer.setAxesColor(Color.LTGRAY);
- 		mRenderer.setGridColor(Color.rgb(136, 136, 136));
- 		mRenderer.setBackgroundColor(Color.BLACK);
- 	
- 		mRenderer.setApplyBackgroundColor(true);
+	// System.out.println("mId : "+ mId);
+	// System.out.println("mTemperature: " + mTemperature);
+	// System.out.println("mPressure: " + mPressure);
+	// System.out.println("mAltitude: " + mAltitude);
 
-    	mRenderer.setMargins(new int[] {60, 60, 60, 60 });
+	private final CountDownTimer mTimer = new CountDownTimer(15 * 60 * 1000, 10) {
+		@Override
+		public void onTick(final long millisUntilFinished) {
+			addValue();
+		}
 
- 		mRenderer.setFitLegend(true);
- 		mRenderer.setShowGrid(true);
- 		
- 		mRenderer.setZoomButtonsVisible(false);
- 		mRenderer.setZoomEnabled(true);
- 		mRenderer.setExternalZoomEnabled(true);
- 		
- 		mRenderer.setAntialiasing(true);
- 		mRenderer.setInScroll(true);
+		@Override
+		public void onFinish() {
+		}
+	};
 
- 	 		
+	final ZoomListener mZoomListener1 = new ZoomListener() {
+		@Override
+		public void zoomReset() {
+			mZoomLevel = 1;
+			scrollGraph(new Date().getTime());
+		}
+
+		@Override
+		public void zoomApplied(final ZoomEvent event) {
+			if (event.isZoomIn()) {
+				mZoomLevel /= 2;
+			} else {
+				mZoomLevel *= 2;
+			}
+			scrollGraph(new Date().getTime());
+		}
+	};
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mItems = new ArrayList<String>();
+		mSeries = new HashMap<String, TimeSeries>();
+		mDataset = new XYMultipleSeriesDataset();
+		mRenderer = new XYMultipleSeriesRenderer();
+
+		mRenderer.setAxisTitleTextSize(24);
+		mRenderer.setChartTitleTextSize(28);
+		mRenderer.setLabelsTextSize(22);
+		mRenderer.setLegendTextSize(22);
+		mRenderer.setPointSize(8f);
+		mYAxisPadding = 9;
+		mRenderer.setXLabelsAlign(Align.CENTER);
+		mRenderer.setYLabelsAlign(Align.CENTER);
+
+		DecimalFormat newFormat = new DecimalFormat("#.###");
+		double mAltitude_t = Double.valueOf(newFormat
+				.format(BMP_pressureSubscriber.mAltitude));
+
+		mRenderer.setChartTitle("Live Temperature from RaspberryPi ("
+				+ BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) "
+				+ "\n" + "at Pressure " + BMP_pressureSubscriber.mPressure
+				+ "kPa and Altitude " + mAltitude_t + " meter");
+
+		mRenderer.setXTitle("In Real Time...");
+		mRenderer.setYTitle("Temperature (degree Celsius)");
+		mRenderer.setLabelsColor(Color.LTGRAY);
+		mRenderer.setAxesColor(Color.LTGRAY);
+		mRenderer.setGridColor(Color.rgb(136, 136, 136));
+		mRenderer.setBackgroundColor(Color.BLACK);
+
+		mRenderer.setApplyBackgroundColor(true);
+
+		mRenderer.setMargins(new int[] { 60, 60, 60, 60 });
+
+		mRenderer.setFitLegend(true);
+		mRenderer.setShowGrid(true);
+
+		mRenderer.setZoomButtonsVisible(false);
+		mRenderer.setZoomEnabled(true);
+		mRenderer.setExternalZoomEnabled(true);
+
+		mRenderer.setAntialiasing(true);
+		mRenderer.setInScroll(true);
+
 		mThresholds = new TimeSeries[3];
 		mThresholdRenderers = new XYSeriesRenderer[3];
 
@@ -181,38 +177,44 @@ import android.widget.LinearLayout.LayoutParams;
 
 			mThresholds[i] = new TimeSeries(THRESHOLD_LABELS[i]);
 			final long now = new Date().getTime();
-			mThresholds[i].add(new Date(now - 1000 * 60 * 10), THRESHOLD_VALUES[i]);
-			mThresholds[i].add(new Date(now + 1000 * 60 * 10), THRESHOLD_VALUES[i]);
+			mThresholds[i].add(new Date(now - 1000 * 60 * 10),
+					THRESHOLD_VALUES[i]);
+			mThresholds[i].add(new Date(now + 1000 * 60 * 10),
+					THRESHOLD_VALUES[i]);
 
 			mDataset.addSeries(mThresholds[i]);
 			mRenderer.addSeriesRenderer(mThresholdRenderers[i]);
 		}
- 	}
+	}
 
- 	@Override
- 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
- 		if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
- 			
- 			mYAxisPadding = 9;
+	@Override
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
+		if (Configuration.ORIENTATION_PORTRAIT == getResources()
+				.getConfiguration().orientation) {
+
+			mYAxisPadding = 9;
 			mRenderer.setYLabels(30);
- 
- 		}
- 
- 	final LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_temperature, container, false);
- 		
-  		
- 		mChartView = ChartFactory.getTimeChartView(getActivity(), mDataset, mRenderer, TIME);
- 		mChartView.addZoomListener(mZoomListener1, true, false);
- 		view.addView(mChartView, new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
-	 	
- 		return view;
- 	}
+		}
 
- 	@Override
+		final LinearLayout view = (LinearLayout) inflater.inflate(
+				R.layout.fragment_temperature, container, false);
+
+		mChartView = ChartFactory.getTimeChartView(getActivity(), mDataset,
+				mRenderer, TIME);
+		mChartView.addZoomListener(mZoomListener1, true, false);
+		view.addView(mChartView, new LayoutParams(
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		return view;
+	}
+
+	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		mViewZoomIn1 = getActivity().findViewById(R.id.zoom_in1);
 		mViewZoomOut1 = getActivity().findViewById(R.id.zoom_out1);
 		mViewZoomReset1 = getActivity().findViewById(R.id.zoom_reset1);
@@ -223,124 +225,128 @@ import android.widget.LinearLayout.LayoutParams;
 		mTimer.start();
 	}
 
- 
-  
- 	@Override
- 	public void onStop() {
- 		super.onStop();
- 		if (null != mTimer) {
- 			mTimer.cancel();
- 		}
- 	}
- 
- 	private void addValue() {
- 		
- 	 	
- 	 	final double value = BMP_pressureSubscriber.mTemperature;
- 		/*
- 		System.out.println("TemperatureFragment:mId: " + mId);
- 		System.out.println("TemperatureFragment:mTemperature: " + mTemperature);
- 		System.out.println("TemperatureFragment:mPressure: " + mPressure);
- 		System.out.println("TemperatureFragment:mAltitude: " + mAltitude);
- 		*/
- 		
- 		DecimalFormat newFormat = new DecimalFormat("#.###");
-		double mAltitude_t =  Double.valueOf(newFormat.format(BMP_pressureSubscriber.mAltitude));
-		 
-		mRenderer.setChartTitle("Live Temperature from RaspberryPi (" +  BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) " +  "\n" +
-		 		"at Pressure " +  BMP_pressureSubscriber.mPressure + "kPa and Altitude " + mAltitude_t + " meter" );
- 	 	   			 
- 		//Pressure/ Temperature/ Altitude Sensor
- 		if (mYAxisMin > value) mYAxisMin = value;
- 		if (mYAxisMax < value) mYAxisMax = value;
- 		
- 		final Date now = new Date();
- 		final long time = now.getTime();
+	@Override
+	public void onStop() {
+		super.onStop();
+		if (null != mTimer) {
+			mTimer.cancel();
+		}
+	}
 
- 	if (time - mLastItemChange > 10000) {
- 			mLastItemChange = time;
- 			mItemIndex = 5; //Math.abs(RAND.nextInt(ITEMS.length));
- 		}
+	private void addValue() {
 
- 		final String item = ITEMS[mItemIndex];
- 		final int color = COLORS[2]; //w.r.t number of colors
- 		final int lastItemIndex = mItems.lastIndexOf(item);
- 		mItems.add(item);
+		final double value = BMP_pressureSubscriber.mTemperature;
+		/*
+		 * System.out.println("TemperatureFragment:mId: " + mId);
+		 * System.out.println("TemperatureFragment:mTemperature: " +
+		 * mTemperature); System.out.println("TemperatureFragment:mPressure: " +
+		 * mPressure); System.out.println("TemperatureFragment:mAltitude: " +
+		 * mAltitude);
+		 */
 
- 		if (lastItemIndex > -1) {
- 			boolean otherItemBetween = false;
- 			for (int i = lastItemIndex + 1; i < mItems.size(); i++) {
- 				if (!item.equals(mItems.get(i))) {
- 					otherItemBetween = true;
- 					break;
- 				}
- 			}
- 			if (otherItemBetween) {
- 				addSeries(null, now, value, item, color);
- 			}
- 			else {
- 				mSeries.get(item).add(now, value);
- 			}
- 		}
- 		else {
- 			addSeries(item, now, value, item, color);
- 		}
+		DecimalFormat newFormat = new DecimalFormat("#.###");
+		double mAltitude_t = Double.valueOf(newFormat
+				.format(BMP_pressureSubscriber.mAltitude));
 
- 		scrollGraph(time);
- 		mChartView.repaint();
- 	 
- 	}
+		mRenderer.setChartTitle("Live Temperature from RaspberryPi ("
+				+ BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) "
+				+ "\n" + "at Pressure " + BMP_pressureSubscriber.mPressure
+				+ "kPa and Altitude " + mAltitude_t + " meter");
 
- 	private void addSeries(final String title, final Date time, final double value, final String item, final int color) {
- 		for (int i = 0; i < THRESHOLD_COLORS.length; i++) {
- 			mThresholds[i].add(new Date(time.getTime() + 1000 * 60 * 5), THRESHOLD_VALUES[i]);
- 		}
+		// Pressure/ Temperature/ Altitude Sensor
+		if (mYAxisMin > value)
+			mYAxisMin = value;
+		if (mYAxisMax < value)
+			mYAxisMax = value;
 
- 		final TimeSeries series = new TimeSeries(title);
- 		series.clear();
- 		series.add(time, value);
- 		mSeries.put(item, series);
- 		mDataset.addSeries(series);
- 		mRenderer.addSeriesRenderer(getSeriesRenderer(color));
- 	}
+		final Date now = new Date();
+		final long time = now.getTime();
 
- 	private void scrollGraph(final long time) {
- 		final double[] limits = new double[] { time - TEN_SEC * mZoomLevel, time + TWO_SEC * mZoomLevel, mYAxisMin - mYAxisPadding,
- 				mYAxisMax + mYAxisPadding };
- 		mRenderer.setRange(limits);
- 	}
+		if (time - mLastItemChange > 10000) {
+			mLastItemChange = time;
+			mItemIndex = 5; // Math.abs(RAND.nextInt(ITEMS.length));
+		}
 
- 	private XYSeriesRenderer getSeriesRenderer(final int color) {
- 		final XYSeriesRenderer r = new XYSeriesRenderer();
- 		r.setDisplayChartValues(true);
- 		r.setChartValuesTextSize(22);
- 		r.setPointStyle(PointStyle.CIRCLE);
- 		r.setColor(color);
- 		r.setFillPoints(true);
- 		r.setLineWidth(4);
- 		return r;
- 	}
+		final String item = ITEMS[mItemIndex];
+		final int color = COLORS[2]; // w.r.t number of colors
+		final int lastItemIndex = mItems.lastIndexOf(item);
+		mItems.add(item);
 
- 	@Override
+		if (lastItemIndex > -1) {
+			boolean otherItemBetween = false;
+			for (int i = lastItemIndex + 1; i < mItems.size(); i++) {
+				if (!item.equals(mItems.get(i))) {
+					otherItemBetween = true;
+					break;
+				}
+			}
+			if (otherItemBetween) {
+				addSeries(null, now, value, item, color);
+			} else {
+				mSeries.get(item).add(now, value);
+			}
+		} else {
+			addSeries(item, now, value, item, color);
+		}
+
+		scrollGraph(time);
+		mChartView.repaint();
+
+	}
+
+	private void addSeries(final String title, final Date time,
+			final double value, final String item, final int color) {
+		for (int i = 0; i < THRESHOLD_COLORS.length; i++) {
+			mThresholds[i].add(new Date(time.getTime() + 1000 * 60 * 5),
+					THRESHOLD_VALUES[i]);
+		}
+
+		final TimeSeries series = new TimeSeries(title);
+		series.clear();
+		series.add(time, value);
+		mSeries.put(item, series);
+		mDataset.addSeries(series);
+		mRenderer.addSeriesRenderer(getSeriesRenderer(color));
+	}
+
+	private void scrollGraph(final long time) {
+		final double[] limits = new double[] { time - TEN_SEC * mZoomLevel,
+				time + TWO_SEC * mZoomLevel, mYAxisMin - mYAxisPadding,
+				mYAxisMax + mYAxisPadding };
+		mRenderer.setRange(limits);
+	}
+
+	private XYSeriesRenderer getSeriesRenderer(final int color) {
+		final XYSeriesRenderer r = new XYSeriesRenderer();
+		r.setDisplayChartValues(true);
+		r.setChartValuesTextSize(22);
+		r.setPointStyle(PointStyle.CIRCLE);
+		r.setColor(color);
+		r.setFillPoints(true);
+		r.setLineWidth(4);
+		return r;
+	}
+
+	@Override
 	public void onClick(final View v) {
- 		
- 		switch (v.getId()) {
- 		case R.id.zoom_in1:
- 			mChartView.zoomIn();
- 			break;
 
- 		case R.id.zoom_out1:
- 			mChartView.zoomOut();
- 			break;
+		switch (v.getId()) {
+		case R.id.zoom_in1:
+			mChartView.zoomIn();
+			break;
 
- 		case R.id.zoom_reset1:
- 			mChartView.zoomReset();
- 			break;
+		case R.id.zoom_out1:
+			mChartView.zoomOut();
+			break;
 
- 		default:
- 			break;
- 		}
+		case R.id.zoom_reset1:
+			mChartView.zoomReset();
+			break;
 
- 	}
- 	
- }
+		default:
+			break;
+		}
+
+	}
+
+}

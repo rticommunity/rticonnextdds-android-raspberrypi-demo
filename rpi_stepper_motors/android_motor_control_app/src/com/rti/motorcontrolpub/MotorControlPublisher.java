@@ -86,14 +86,7 @@ public class MotorControlPublisher {
 	// Public Methods
 	// -----------------------------------------------------------------------
 
-	/*public static String mMotor_id = "3";
-	public static int mTime_sec = 0;
-	public static String mDirection = "Clock";
-	public static int mSpeed = 0;
-	public static String mSpeed_s = "xxxxx";
-	public static String mAction = "Start";*/
-
-	public static Boolean flagBtn = false;
+ 	public static Boolean flagBtn = false;
 	
 	public static int Pub_sub_create_count=1;
 
@@ -220,11 +213,7 @@ public class MotorControlPublisher {
 			// instance_handle = writer.register_instance(instance);
 
 			while (true) {
-				/*
-				 * for (int count = 0; (sampleCount == 0) || (count <
-				 * sampleCount); ++count) {
-				 */
-
+			 
 				// System.out.println("Writing MotorControl, count " + count);
 
 				if (MotorControlPublisher.flagBtn) {

@@ -10,7 +10,7 @@
  ******************************************************************************/
 /*
 
-/* Motor_control_publisher.c
+ /* Motor_control_publisher.c
 
  A publication of data of type MotorControl
 
@@ -35,11 +35,11 @@
  (4) [Optional] Specify the list of discovery initial peers and 
  multicast receive addresses via an environment variable or a file 
  (in the current working directory) called NDDS_DISCOVERY_PEERS. 
- 
+
  You can run any number of publishers and subscribers programs, and can 
  add and remove them dynamically from the domain.
- 
- 
+
+
  Example:
 
  To run the example application on domain <domain_id>:
@@ -48,13 +48,13 @@
 
  objs/<arch>/Motor_control_publisher <domain_id> 
  objs/<arch>/Motor_control_subscriber <domain_id> 
- 
+
  On Windows:
 
  objs\<arch>\Motor_control_publisher <domain_id>  
  objs\<arch>\Motor_control_subscriber <domain_id>   
- 
- 
+
+
  modification history
  ------------ -------       
  */
@@ -111,7 +111,7 @@ static int publisher_main(int domainId, int sample_count) {
 	DDS_InstanceHandle_t instance_handle = DDS_HANDLE_NIL;
 	const char *type_name = NULL;
 	int count = 0;
-	struct DDS_Duration_t send_period = {5, 0 };
+	struct DDS_Duration_t send_period = { 5, 0 };
 
 	/* To customize participant QoS, use 
 	 the configuration file USER_QOS_PROFILES.xml */
@@ -187,39 +187,22 @@ static int publisher_main(int domainId, int sample_count) {
 	 instance_handle = MotorControlDataWriter_register_instance(
 	 MotorControl_writer, instance);
 	 */
-
-	/* Main loop */
-	// for (count=0; (sample_count == 0) || (count < sample_count); ++count) {
-	//   printf("Writing MotorControl, count %d\n", count);
-	/* Modify the data to be written here */
-
-	char motor_id[10]= "1";
-	long time_sec=4;
-	char direction[5]="clock"; //clock or anti
-	long speed=5;
-	char action[5]="start";  //start or stop
+	char motor_id[2] = "1";
+	long time_sec = 4;
+	char direction[5] = "clock"; //clock or anti
+	long speed = 5;
+	char action[5] = "start"; //start or stop
 
 	while (1) {
-	//for (count=0; (sample_count == 0) || (count < sample_count); ++count) {
-		printf("Enter MotorId (A/B), duration(sec), Direction(clock/anti-clock), Speed (default), Actions(Start/Stop) : \n");
+		printf(
+				"Enter MotorId (A/B), duration(sec), Direction(clock/anti-clock), Speed (default), Actions(Start/Stop) : \n");
 		scanf("%s %d %s %d %s", motor_id, &time_sec, direction, &speed, action);
 
-		/*
-		 printf( "Time in Sec: \n" );
-		 scanf( "%d",&time_sec);
-		 printf( "Direction (clock or anti-clock) : \n" );
-		 scanf( "%s",direction);
-		 printf( "Speed (default) : \n" );
-		 scanf( "%d", &speed);
-		 printf( "Action (Start or Stop) : \n" );
-		 scanf( "%s", action);
-		 */
 		instance->motor_id = motor_id;
 		instance->time_sec = time_sec;
 		instance->direction = direction;
 		instance->speed = speed;
 		instance->action = action;
-
 
 		/* Write data */
 		retcode = MotorControlDataWriter_write(MotorControl_writer, instance,

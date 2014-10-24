@@ -19,7 +19,6 @@
 
 package info.rti.tabsswipe;
 
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,40 +32,39 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
- 
- 
+
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener { 
- 	
+		ActionBar.TabListener {
+
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-	 
+
 	// Tab titles
-	private String[] tabs = {"Temperature", "Pressure", "Altitude"};
+	private String[] tabs = { "Temperature", "Pressure", "Altitude" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	 
+
 		setContentView(R.layout.activity_main);
-		 
-		//Starting DDS subscriber as separate threaded task...
-		if (BMP_pressureSubscriber.Pub_sub_create_count==1) {
-		ExecutorService service = Executors.newFixedThreadPool(4);
-		 service.submit(new Runnable() {
-		        @Override
+
+		// Starting DDS subscriber as separate threaded task...
+		if (BMP_pressureSubscriber.Pub_sub_create_count == 1) {
+			ExecutorService service = Executors.newFixedThreadPool(4);
+			service.submit(new Runnable() {
+				@Override
 				public void run() {
-		        	String[] args = {}; // {"0", "2"};
-		    		BMP_pressureSubscriber.main(args);		 
-		        }
-		    });
-		 BMP_pressureSubscriber.Pub_sub_create_count=0;
+					String[] args = {}; // {"0", "2"};
+					BMP_pressureSubscriber.main(args);
+				}
+			});
+			BMP_pressureSubscriber.Pub_sub_create_count = 0;
 		}
-		 
-		//System.out.println("Pressure_high 0: " + mPressure_high);
- 	 	// System.out.println("Pressure_low 0: " + mPressure_low);
-		
+
+		// System.out.println("Pressure_high 0: " + mPressure_high);
+		// System.out.println("Pressure_low 0: " + mPressure_low);
+
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -74,8 +72,8 @@ public class MainActivity extends FragmentActivity implements
 
 		viewPager.setAdapter(mAdapter);
 		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);		
-	 
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 		// Adding Tabs
 		for (String tab_name : tabs) {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
@@ -106,9 +104,8 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {	
-	
-	
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+
 	}
 
 	@Override
@@ -116,13 +113,12 @@ public class MainActivity extends FragmentActivity implements
 		// on tab selected
 		// show respected fragment view
 		viewPager.setCurrentItem(tab.getPosition());
- 
+
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
- 
-		
+
 	}
 
 }

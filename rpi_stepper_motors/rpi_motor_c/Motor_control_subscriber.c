@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  (c) 2005-2014 Copyright, Real-Time Innovations, Inc.  All rights reserved.
  RTI grants Licensee a license to use, modify, compile, and create derivative
@@ -9,7 +8,7 @@
  any incidental or consequential damages arising out of the use or inability to
  use the software.
  ******************************************************************************/
- 
+
 /* Motor_control_subscriber.c
 
  A subscription example
@@ -94,27 +93,25 @@ FILE *pin1_b;
 FILE *pin2_b;
 FILE *pin3_b;
 
-//struct timespec mts = { 0, 0 };
+
 
 pthread_mutex_t mutexA;
 pthread_mutex_t mutexB;
 
-void  InitMutexA() {
-	if(pthread_mutex_init(&mutexA, NULL) != 0) {
-		 printf("\n mutexA init failed\n");
-		        return 1;
+void InitMutexA() {
+	if (pthread_mutex_init(&mutexA, NULL) != 0) {
+		printf("\n mutexA init failed\n");
+		return 1;
 	}
 }
 void InitMutexB() {
-	if(pthread_mutex_init(&mutexB, NULL) != 0) {
-		 printf("\n mutexB init failed\n");
-				        return 1;
+	if (pthread_mutex_init(&mutexB, NULL) != 0) {
+		printf("\n mutexB init failed\n");
+		return 1;
 	}
 
 }
 
-
- 
 /**************Motor Code Start************/
 
 // General purpose error message
@@ -200,14 +197,14 @@ static void sleep_until(struct timespec *ts, int delay) {
 
 /*****
  * Demo program for running a stepper connected to the Raspberry PI
-platform.
-# Motor definitions
-  motora = Motor(17,18,27,22)
-  motorb = Motor(4,25,24,23)
+ platform.
+ # Motor definitions
+ motora = Motor(17,18,27,22)
+ motorb = Motor(4,25,24,23)
 
-  Physical pins 11, 12, 13, 15 for Motor A
-  Physical pins 16, 18, 22, 7 for Motor B
-********/
+ Physical pins 11, 12, 13, 15 for Motor A
+ Physical pins 16, 18, 22, 7 for Motor B
+ ********/
 
 void *Motor_B(void *delay_sec) {
 
@@ -215,12 +212,11 @@ void *Motor_B(void *delay_sec) {
 
 	fflush(stdout);
 
- 	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
+	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
 
 	struct timespec ts;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 	//range of speed is .9mil sec to 9 mils
-
 
 	time_t start_time;
 	time_t current_time;
@@ -260,22 +256,22 @@ void *Motor_B(void *delay_sec) {
 		pin3_b = init_gpio(23);
 	}
 
-/ * Few Temp variables to hold old valuse before entering in While loop*/
+	/ * Few Temp variables to hold old valuse before entering in While loop*/
 	int mDirection_t = mDirection;
 	int mDuration_t = mTimeSec_t;
 	int mSpeed_t = mSpeed;
- 
+
 	while (mStart == 0) {
 
 		if (mMotorId == 1) {
 			goto end;
 		}
-		if( (mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed) ) {
+		if ((mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed)) {
 			goto end;
 		}
 
 		delay = mSpeed * 1000000;
- 
+
 		setiopin(pin0_b, 1);
 		sleep_until(&ts, delay);
 
@@ -302,9 +298,7 @@ void *Motor_B(void *delay_sec) {
 
 		current_time = time(NULL);
 
-
-
-	if (current_time <= start_time + mTimeSec_t) {
+		if (current_time <= start_time + mTimeSec_t) {
 			continue;
 		} else {
 			goto end;
@@ -331,23 +325,21 @@ void *Motor_B(void *delay_sec) {
 	setiopin(pin2_b, 0);
 	setiopin(pin3_b, 0);
 
-
 	pthread_mutex_unlock(&mutexB);
 	pthread_mutex_destroy(&mutexB);
-//	pthread_exit(NULL);
+	//	pthread_exit(NULL);
 
- pthread_exit(Motor_B);
+	pthread_exit(Motor_B);
 	return NULL;
 }
- 
- 
+
 void *Motor_A(void *delay_sec) {
 
 	pthread_mutex_lock(&mutexA);
 
 	fflush(stdout);
 
- 	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
+	unsigned int delay = mSpeed * 1000000; // Note: Delay in ns i.e.,
 	struct timespec ts;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 
@@ -395,21 +387,19 @@ void *Motor_A(void *delay_sec) {
 	}
 
 	int mDirection_t = mDirection;
- 	int mDuration_t = mTimeSec_t;
+	int mDuration_t = mTimeSec_t;
 	int mSpeed_t = mSpeed;
-	
+
 	while (mStart == 0) {
 		if (mMotorId == 2) {
 
 			goto end;
 		}
-		if( (mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed) ) {
+		if ((mDuration_t != mTimeSec_t) || (mSpeed_t != mSpeed)) {
 			goto end;
 		}
 
-
 		delay = mSpeed * 1000000;
-
 
 		setiopin(pin0_a, 1);
 		sleep_until(&ts, delay);
@@ -435,9 +425,7 @@ void *Motor_A(void *delay_sec) {
 		setiopin(pin2_a, 0);
 		sleep_until(&ts, delay);
 
-
 		current_time = time(NULL);
-
 
 		if (current_time <= start_time + mTimeSec_t) {
 			continue;
@@ -471,7 +459,6 @@ void *Motor_A(void *delay_sec) {
 	pthread_mutex_destroy(&mutexA);
 	pthread_exit(Motor_A);
 	//pthread_exit(NULL);
-
 
 	return NULL;
 
@@ -522,7 +509,6 @@ static int subscriber_main(int domainId, int sample_count) {
 	DDS_ReturnCode_t retcode;
 	const char *type_name = NULL;
 	int count = 0;
- 
 
 	DDS_StatusCondition *status_condition;
 	DDS_WaitSet *waitset = NULL;
@@ -623,10 +609,8 @@ static int subscriber_main(int domainId, int sample_count) {
 		return -1;
 	}
 
-
 	int rcA;
 	int rcB;
-
 
 	/* Main loop */
 	for (count = 0; (sample_count == 0) || (count < sample_count); ++count) {
@@ -680,7 +664,7 @@ static int subscriber_main(int domainId, int sample_count) {
 						printf("%s %d %s %d %s\n", sample_t->motor_id,
 								sample_t->time_sec, sample_t->direction,
 								sample_t->speed, sample_t->action);
-			 
+
 						mMotorId = atoi(sample_t->motor_id);
 						mTimeSec_t = mTimeSec = sample_t->time_sec;
 
@@ -688,13 +672,11 @@ static int subscriber_main(int domainId, int sample_count) {
 						mSpeed = sample_t->speed;
 						mStart = atoi(sample_t->action);
 
-
-
 						printf(
 								"Selection: Motor %d for sec %d, direction=%d, Speed=%d,  mStart=%d\n",
 								mMotorId, mTimeSec, mDirection, mSpeed, mStart);
 
-			 			if (mMotorId == 1) {
+						if (mMotorId == 1) {
 							if (mDirection == 2) {
 								//make inwards to Anti-clock
 								mDirection = 1;
@@ -705,9 +687,7 @@ static int subscriber_main(int domainId, int sample_count) {
 							}
 							pthread_t motor_a;
 
-
 							InitMutexA();
-
 
 							rcA = pthread_create(&motor_a, NULL, Motor_A,
 									&mTimeSec);
@@ -733,7 +713,6 @@ static int subscriber_main(int domainId, int sample_count) {
 							pthread_t motor_b;
 							InitMutexB();
 
-
 							rcB = pthread_create(&motor_b, NULL, Motor_B,
 									&mTimeSec);
 							if (rcB) {
@@ -746,7 +725,6 @@ static int subscriber_main(int domainId, int sample_count) {
 							// pthread_join(motor_b, NULL);
 							pthread_detach(motor_b);
 
-
 						}
 
 						if (mMotorId == 3)
@@ -755,8 +733,6 @@ static int subscriber_main(int domainId, int sample_count) {
 							InitMutexA();
 							InitMutexB();
 							pthread_t motor_a, motor_b;
-
-
 
 							rcA = pthread_create(&motor_a, NULL, Motor_A,
 									&mTimeSec);

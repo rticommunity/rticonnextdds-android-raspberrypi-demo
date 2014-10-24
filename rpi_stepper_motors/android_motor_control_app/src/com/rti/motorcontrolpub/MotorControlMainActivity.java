@@ -83,20 +83,12 @@ public class MotorControlMainActivity extends Activity {
 				spinner2.setEnabled(true);
 				spinner3.setEnabled(true);
 				spinner4.setEnabled(true);
-
-			/* spinner1.refreshDrawableState();
-			 spinner2.refreshDrawableState();
-			 spinner3.refreshDrawableState();
-			 spinner4.refreshDrawableState();*/
-		 
+ 	 
 				MotorControlMainActivity.mMotor_id = spinner1.getSelectedItem()
 						.toString();
 				MotorControlMainActivity.mTime_sec = Integer.valueOf(spinner2
 						.getSelectedItem().toString());
-				//MotorControlPublisher.mDirection = spinner3.getSelectedItem()
-				//		.toString();
-				//MotorControlPublisher.mSpeed_s = spinner4.getSelectedItem()
-					//	.toString();
+				 
 				
 				if(spinner3.getSelectedItem()
 						.toString().equals("Clock"))
@@ -166,12 +158,7 @@ public class MotorControlMainActivity extends Activity {
 						MotorControlMainActivity.mTime_sec = Integer
 								.valueOf(spinner2.getSelectedItem().toString());
 						
-						//MotorControlPublisher.mDirection = spinner3
-							//	.getSelectedItem().toString();
-						
-						//MotorControlPublisher.mSpeed_s = spinner4.getSelectedItem()
-							//	.toString();
-						
+			 				
 						if(spinner3.getSelectedItem().toString().equals("Clock")){
 							MotorControlMainActivity.mDirection = "0";
 						}
@@ -184,21 +171,7 @@ public class MotorControlMainActivity extends Activity {
 							MotorControlMainActivity.mDirection = "2";
 						}
 						
-						/*	if(MotorControlPublisher.mDirection.equals("Clock"))
-						{
-			 				MotorControlPublisher.mDirection="0";
-						} 
-						
-						if(MotorControlPublisher.mDirection.equals("Anti"))
-						{
-							MotorControlPublisher.mDirection="1";
-						}
-						
-						if(MotorControlPublisher.mDirection.equals("Invrt"))
-						{
-							MotorControlPublisher.mDirection="2";
-						}
-				*/
+		 
 						if(spinner4.getSelectedItem()
 								.toString().equals("Fast"))
 						{
@@ -212,12 +185,7 @@ public class MotorControlMainActivity extends Activity {
 								.toString().equals("Slow")) {
 							MotorControlMainActivity.mSpeed=8;
 						} 
-					/*try {
-						wait(10);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
+			 
 					}
 				}.start();
 
