@@ -101,13 +101,11 @@ pthread_mutex_t mutexB;
 void InitMutexA() {
 	if (pthread_mutex_init(&mutexA, NULL) != 0) {
 		printf("\n mutexA init failed\n");
-		return 1;
 	}
 }
 void InitMutexB() {
 	if (pthread_mutex_init(&mutexB, NULL) != 0) {
 		printf("\n mutexB init failed\n");
-		return 1;
 	}
 
 }
@@ -256,7 +254,7 @@ void *Motor_B(void *delay_sec) {
 		pin3_b = init_gpio(23);
 	}
 
-	/ * Few Temp variables to hold old valuse before entering in While loop*/
+	/* Few Temp variables to hold old valuse before entering in While loop */
 	int mDirection_t = mDirection;
 	int mDuration_t = mTimeSec_t;
 	int mSpeed_t = mSpeed;
