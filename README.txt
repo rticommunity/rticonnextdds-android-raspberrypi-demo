@@ -3,11 +3,11 @@ rticonnextdds-android-raspberrypi-demo
 
 ======================================
 1. What problem does it solve:
-  1. Systems integration via platform agnostics.
-  2. Demonstrates systems integration and platform agnostics by linking together,
+  a. Systems integration via platform agnostics.
+  b. Demonstrates systems integration and platform agnostics by linking together,
       * Different computing systems (CPU+OS) and,
       * Software application languages (C, C++, Java etc.,).
-  3. To exchange various types of data (i.e., Values, Events, Alarms, Commands, Streams) coordinated between publishers and subscribers over LAN and/or WAN.
+  c. To exchange various types of data (i.e., Values, Events, Alarms, Commands, Streams) coordinated between publishers and subscribers over LAN and/or WAN.
 
 2. Visibility into system:
   * Publisher and Subscriber match analysis, debugging, host identification,
