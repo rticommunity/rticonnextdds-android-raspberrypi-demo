@@ -67,17 +67,12 @@ package com.rti.motorcontrolpub;
  ******************************************************************************/
 
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-
-import android.R.bool;
-
-import com.rti.dds.domain.*;
-import com.rti.dds.infrastructure.*;
-import com.rti.dds.publication.*;
-import com.rti.dds.topic.*;
-import com.rti.ndds.config.*;
+import com.rti.dds.domain.DomainParticipant;
+import com.rti.dds.domain.DomainParticipantFactory;
+import com.rti.dds.infrastructure.InstanceHandle_t;
+import com.rti.dds.infrastructure.StatusKind;
+import com.rti.dds.publication.Publisher;
+import com.rti.dds.topic.Topic;
 
 // ===========================================================================
 
@@ -89,6 +84,7 @@ public class MotorControlPublisher {
  	public static Boolean flagBtn = false;
 	
 	public static int Pub_sub_create_count=1;
+	public static int Pub_sub_create_count_http=1;
 
 	public static void main(String[] args) {
 		// --- Get domain ID --- //

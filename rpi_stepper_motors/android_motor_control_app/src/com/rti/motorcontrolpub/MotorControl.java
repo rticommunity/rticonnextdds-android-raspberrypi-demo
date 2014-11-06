@@ -25,6 +25,7 @@ import java.io.Serializable;
 import com.rti.dds.cdr.CdrHelper;
 import com.rti.dds.infrastructure.Copyable;
 
+@SuppressWarnings("serial")
 public class MotorControl implements Copyable, Serializable {
 
 	public String motor_id = ""; /* maximum length = (128) */

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">MotorControlPublisher</string>
+	<string name="app_name">MotorControlPublisher</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="textViewStart">Start</string>
@@ -11,21 +10,25 @@
     <string name="Clock">Clock</string>
     <string name="AntiClock">Anti-Clock</string>
     <string name="button_send">Send</string>
-    <string name="Timer">   </string>
-     <string name="Speed">Speed</string>
+    <string name="Timer">------------------------</string>
+    <string name="WebCamURL">Live WebCam http://87.82.193.136:8081</string>
+    <string name="Speed">Speed</string>
     
     <string name="Speed_prompt">Choose Motor Speed</string>
     <string-array name="Speed_arrays">
+        <item>Fastest</item>
+        <item>Faster</item>
         <item>Fast</item>
-        <item>Medium</item>
         <item>Slow</item>
+        <item>Slower</item>
+        <item>Slowest</item>
     </string-array>
     
     <string name="MotorID_prompt">Choose Motor ID</string>
     <string-array name="MotorID_arrays">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Both</item>
     </string-array>
  
     <string name="Duration_prompt">Choose duration (secs) to run Motor</string>
@@ -47,6 +50,43 @@
         <item>Clock</item>
         <item>Anti</item>
         <item>Invrt</item>
+        <item>Outvt</item>
     </string-array>
+    
+    <string name="settings">Settings</string>
+	
+	<string name="resolution_label">Resolution</string>
+	<string name="resolution_times"> x </string>
+	<string-array name="resolution_array">
+        <item>640x480</item>
+        <item>480x640</item>
+        <item>320x240</item>
+        <item>240x320</item>
+        <item>176x144</item>
+        <item>144x176</item>
+        <item>Custom</item>
+    </string-array>
+
+	<string name="ip_setting_label">Address</string>
+	<string name="port_setting_label">Port</string>
+	<string name="command_setting_label">Command</string>
+	
+	<string name="digits_increment">+</string>
+	<string name="digits_decrement">-</string>
+	<string name="address_dot">.</string>
+	<string name="port_80">80</string>
+	<string name="port_8080">8080</string>
+	<string name="port_80_with_explanation">80 (for Ai-ball)</string>
+	<string name="port_8080_with_explanation">8080 (for IP Webcam)</string>	
+	<string name="command_streaming">\?action=stream</string>
+	<string name="command_videofeed">videofeed</string>
+	<string name="command_streaming_with_explanation">\?action=stream (for Ai-ball)</string>
+	<string name="command_videofeed_with_explanation">videofeed (for IP Webcam)</string>
+	
+	<string name="settings_done">Done</string>
+	
+	<string name="title_disconnected">Disconnected</string>
+	<string name="title_connecting">Connecting&#8230;</string>
+	<string name="title_imageerror">Error on preparing images</string>
  
 </resources>

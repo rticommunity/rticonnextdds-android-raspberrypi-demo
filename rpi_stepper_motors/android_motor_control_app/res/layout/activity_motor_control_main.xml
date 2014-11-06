@@ -6,107 +6,123 @@
     android:paddingRight="16dp" >
 
     <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mv"
+        android:layout_alignLeft="@+id/mv"
+        android:text="@string/WebCamURL"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignTop="@+id/spinner4"
+        android:text="@string/Speed"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
         android:layout_alignTop="@+id/spinner3"
         android:text="@string/textViewDirection"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Spinner
-        android:id="@+id/spinner1"
-        style="@style/AppBaseTheme"
-        android:layout_width="219dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner2"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:entries="@array/MotorID_arrays"
-        android:prompt="@string/MotorID_prompt" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
         android:layout_alignTop="@+id/spinner1"
-        android:layout_marginRight="36dp"
-        android:layout_toLeftOf="@+id/spinner2"
         android:text="@string/textViewMotorID"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/spinner1"
-        android:layout_marginTop="52dp"
-        android:text="@string/textViewDuration"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        style="@style/AppBaseTheme"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnSubmit"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_marginLeft="18dp"
-        android:entries="@array/Duration_arrays"
-        android:prompt="@string/Duration_prompt" />
-
-    <Spinner
-        android:id="@+id/spinner3"
-        style="@style/AppBaseTheme"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner2"
-        android:layout_below="@+id/spinner2"
-        android:layout_marginTop="54dp"
-        android:entries="@array/Direction_arrays"
-        android:prompt="@string/Direction_prompt" />
-    
-    <Spinner
-        android:id="@+id/spinner4"
-        style="@style/AppBaseTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner3"
-        android:layout_alignRight="@+id/spinner1"
-        android:layout_below="@+id/spinner3"
-        android:layout_marginTop="60dp"
-        android:entries="@array/Speed_arrays"
-        android:prompt="@string/Speed_prompt" />
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_alignTop="@+id/spinner4"
-        android:text="@string/Speed"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner4"
-        android:layout_marginTop="39dp"
-        android:layout_toRightOf="@+id/TextView01"
+        android:layout_above="@+id/textView5"
+        android:layout_marginBottom="18dp"
+        android:layout_toRightOf="@+id/textView1"
         android:text="@string/Timer"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="@style/AppTheme"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnSubmit"
         style="@style/AppBaseTheme"
         android:layout_width="137dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView4"
-        android:layout_marginRight="208dp"
-        android:layout_marginTop="66dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
         android:text="@string/textViewStart" />
- 
+
+    <Spinner
+        android:id="@+id/spinner1"
+        style="@style/AppBaseTheme"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/mv"
+        android:layout_marginLeft="39dp"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@+id/textView2"
+        android:entries="@array/MotorID_arrays"
+        android:prompt="@string/MotorID_prompt" />
+
+    <Spinner
+        android:id="@+id/spinner4"
+        style="@style/AppBaseTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_alignRight="@+id/spinner2"
+        android:layout_below="@+id/spinner3"
+        android:entries="@array/Speed_arrays"
+        android:prompt="@string/Speed_prompt" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        style="@style/AppBaseTheme"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner4"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_below="@+id/spinner2"
+        android:entries="@array/Direction_arrays"
+        android:prompt="@string/Direction_prompt" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        style="@style/AppBaseTheme"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_alignRight="@+id/spinner1"
+        android:layout_below="@+id/spinner1"
+        android:entries="@array/Duration_arrays"
+        android:prompt="@string/Duration_prompt" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignTop="@+id/spinner2"
+        android:text="@string/textViewDuration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <com.camera.simplemjpeg.MjpegView
+        android:id="@+id/mv"
+        android:layout_width="320dp"
+        android:layout_height="240dp"
+        android:layout_above="@+id/btnSubmit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp" /> 
 </RelativeLayout>
