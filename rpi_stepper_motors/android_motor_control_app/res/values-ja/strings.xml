@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<string name="app_name">簡単MJPEGビューア</string>
+    
+	<string name="settings">設定</string>
+	<string name="resolution_label">解像度</string>
+	<string-array name="resolution_array">
+        <item>640x480</item>
+        <item>480x640</item>
+        <item>320x240</item>
+        <item>240x320</item>
+        <item>176x144</item>
+        <item>144x176</item>
+        <item>カスタム</item>
+    </string-array>
+		
+	<string name="ip_setting_label">アドレス</string>
+	<string name="port_setting_label">ポート番号</string>
+	<string name="command_setting_label">コマンド</string>
+	
+	<string name="port_80_with_explanation">80 (Ai-ball用)</string>
+	<string name="port_8080_with_explanation">8080 (IP Webcam用)</string>	
+	<string name="command_streaming_with_explanation">\?action=stream (Ai-ball用)</string>
+	<string name="command_videofeed_with_explanation">videofeed (IP Webcam用)</string>
+	
+	<string name="settings_done">完了</string>	
+	
+	<string name="title_disconnected">接続なし</string>
+	<string name="title_connecting">接続中&#8230;</string>
+	<string name="title_imageerror">画像エラー</string>
+</resources>
