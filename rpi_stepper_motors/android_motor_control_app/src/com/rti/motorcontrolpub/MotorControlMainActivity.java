@@ -174,10 +174,6 @@ public class MotorControlMainActivity extends Activity {
 	public void run() {
 		// replace with your url
 		StringEntity se = null;
-		HttpPost httppost = new HttpPost(
-				"http://87.82.193.136:8080/dds/rest1/types");
-		se = null;
-
 		httppost = new HttpPost(
 				"http://87.82.193.136:8080/dds/rest1/applications/LED_Demo/participants/LEDs/publishers/MyPublisher/datawriters/MyMCWriter");
 		try {
@@ -198,7 +194,6 @@ public class MotorControlMainActivity extends Activity {
 		}
 		//System.out.println("POST: " + se);
 		se.setContentType("application/webdds+xml");
-		 //httppost.addHeader("Cache-Control", "max-age=0");
 		httppost.addHeader("Cache-Control", "no-cache");
 		 
 		httppost.setEntity(se);
