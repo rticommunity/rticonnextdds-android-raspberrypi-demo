@@ -84,7 +84,6 @@ public class MotorControlPublisher {
  	public static Boolean flagBtn = false;
 	
 	public static int Pub_sub_create_count=1;
-	public static int Pub_sub_create_count_http=1;
 
 	public static void main(String[] args) {
 		// --- Get domain ID --- //
