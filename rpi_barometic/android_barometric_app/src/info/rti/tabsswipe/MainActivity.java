@@ -67,65 +67,7 @@ public class MainActivity extends FragmentActivity implements
 		 BMP_pressureSubscriber.Pub_sub_create_count=0;
 		}
 		 
-
-		///XML PARSER///
-	    
-	    
-
-		    //XML PARSER END///
-		// code for Web DDS HTTP POST //
-
-/*
-		XMLOUT:<SampleSeq><Sample><readSampleInfo><sourceTimestamp><sec>1415638373</sec><nanosec>916437998</nanosec>
-		</sourceTimestamp><validData>true</validData>
-		<instanceHandle>246,135,170,109,151,3,0,147,171,133,73,148,248,75,53,214</instanceHandle>
-		<instanceState>DDS_ALIVE_INSTANCE_STATE</instanceState><sampleState>DDS_NOT_READ_SAMPLE_STATE</sampleState>
-		<viewState>DDS_NOT_NEW_VIEW_STATE</viewState></readSampleInfo>
-		<sampleData>
-		<id>RTI UK</id>
-		<Temperature>20.400000</Temperature>
-		<Pressure>98.692000</Pressure>
-		<Altitude>221.552431</Altitude>
-		</sampleData>
-		</Sample>
-		</SampleSeq>
-	*/	
- 		
-/*		new CountDownTimer(1000,100) {
-			public void onTick(long millisUntilFinished) {
-				Thread t = new Thread(new Runnable() {
-					@Override
-					public void run() {
-				try {
-					  URL url = new URL("http://87.82.193.136:8080/dds/rest1/applications/LED_Demo/participants/LEDs/subscribers/TAPSubscriber/datareaders/TAPReader");
-					  HttpURLConnection con = (HttpURLConnection) url
-					    .openConnection();
-					  readStream(con.getInputStream());
-					  } catch (Exception e) {
-					  e.printStackTrace();
-					}
-					}
-				});// end thread
-				t.start();
-			}
-
-			public void onFinish() {
-				
-			}
-		}.start();*/
-		
-	/*	Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-
-			}
-		});// end thread
-		t.start();
-*/
-
-		
-		// End code for WebDDS HTTP POST //
-
+ 
 		//System.out.println("Pressure_high 0: " + mPressure_high);
  	 	// System.out.println("Pressure_low 0: " + mPressure_low);
 		

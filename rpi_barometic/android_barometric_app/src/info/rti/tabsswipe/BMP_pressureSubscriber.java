@@ -201,7 +201,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 				System.err.println("create_subscriber error\n");
 				return;
 			}
-			// xxxxxxxxxxxxxxxx
+
 			subscriber2 = participant.create_subscriber(
 					DomainParticipant.SUBSCRIBER_QOS_DEFAULT,
 					null /* listener */, StatusKind.STATUS_MASK_NONE);
@@ -209,7 +209,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 				System.err.println("create_subscriber2 error\n");
 				return;
 			}
-			// xxxxxxxxxxxxxxxxxxx
+	
 			// --- Create topic --- //
 
 			/* Register type before creating topic */
@@ -229,7 +229,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 				return;
 			}
 
-			// xxxxxxxxxxxxxxxx
+
 			/* Register type before creating topic */
 			String typeName2 = BMP_pressure_rangeTypeSupport.get_type_name();
 			BMP_pressure_rangeTypeSupport.register_type(participant, typeName2);
@@ -247,7 +247,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 				return;
 			}
 
-			// xxxxxxxxxxxxxxxxx
+   
 
 			// --- Create reader --- //
 
@@ -263,7 +263,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 				return;
 			}
 
-			// xxxxxxxxxx
+		 
 			// --- Create reader --- //
 
 			/*
@@ -345,10 +345,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 			waitset.attach_condition(read_condition);
 			waitset.attach_condition(read_condition2);
 
-			// WaitSet waitset2 = new WaitSet();
-			// waitset2.attach_condition(read_condition2);
-			// waitset2.attach_condition(status_condition2);
-
+	 
 			// --- Wait for data --- //
 
 			// Duration_t duration = new Duration_t(1, 500000000);
