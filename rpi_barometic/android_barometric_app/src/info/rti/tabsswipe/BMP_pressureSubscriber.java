@@ -7,8 +7,8 @@
  no obligation to maintain or support the Software.  RTI shall not be liable for
  any incidental or consequential damages arising out of the use or inability to
  use the software.
- ******************************************************************************/
-/*****************************************************************************/
+ ******************************************************************************//
+*****************************************************************************/
 /*         (c) Copyright, Real-Time Innovations, All rights reserved.        */
 /*                                                                           */
 /*         Permission to modify and use for internal purposes granted.       */
@@ -72,6 +72,8 @@ package info.rti.tabsswipe;
  ------------ -------   
  */
 
+import org.w3c.dom.NodeList;
+
 import com.rti.dds.domain.DomainParticipant;
 import com.rti.dds.domain.DomainParticipantFactory;
 import com.rti.dds.domain.DomainParticipantQos;
@@ -104,6 +106,17 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 	public static int mPressure_low = 10;
 
 	public static int Pub_sub_create_count = 1;
+	public static int XML_parser_create_count = 1;
+
+	public final static String URL = "http://87.82.193.136:8080/dds/rest1/applications/LED_Demo/participants/LEDs/subscribers/TAPSubscriber/datareaders/TAPReader";
+
+	// XML node keys
+	public final static String KEY_PARENT = "sampleData"; // parent node
+															// //sampleData
+	public final static String KEY_ID = "id"; // parent node //sampleData
+	public final static String KEY_TEMPRATURE = "Temperature";
+	public final static String KEY_PRESSURE = "Pressure";
+	public final static String KEY_ALTITUDE = "Altitude";
 
 	public static void main(String[] args) {
 		// --- Get domain ID --- //
@@ -339,10 +352,10 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 			// --- Wait for data --- //
 
 			// Duration_t duration = new Duration_t(1, 500000000);
-			Duration_t duration = new Duration_t(10, 500000000);
+			Duration_t duration = new Duration_t(0, 10000000);
 
 			for (int count = 0; (sampleCount == 0) || (count < sampleCount); ++count) {
-				ConditionSeq active_conditions = new ConditionSeq();
+     			ConditionSeq active_conditions = new ConditionSeq();
 				// ConditionSeq active_conditions2 = new ConditionSeq();
 				try {
 					/*
@@ -354,8 +367,51 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 					// waitset.wait(active_conditions2, duration);
 				} catch (RETCODE_TIMEOUT e) {
 					/* We get to timeout if no conditions were triggered */
-					System.out
-							.print("Wait timed out!! No conditions were triggered\n");
+					System.out.print("Wait timed out!! No conditions were triggered\n");
+					
+					XMLParser parser = new XMLParser();
+					String xml = parser.getXmlFromUrl(URL); // getting
+															// XML
+					// System.out.println("XMLOUT:" + xml);
+					org.w3c.dom.Document doc = parser
+							.getDomElement(xml); // getting DOM
+													// element
+					NodeList nl = doc
+							.getElementsByTagName(KEY_PARENT);
+
+					// looping through all item nodes <item>
+					for (int i1 = 0; i1 < nl.getLength(); i1++) {
+						org.w3c.dom.Element e1 = (org.w3c.dom.Element) nl
+								.item(i1);
+						BMP_pressureSubscriber.mId = parser
+								.getValue(e1, KEY_ID);
+						BMP_pressureSubscriber.mTemperature = Double
+								.parseDouble(parser.getValue(e1,
+										KEY_TEMPRATURE)
+										.toString());  
+						BMP_pressureSubscriber.mPressure = Double
+								.parseDouble(parser.getValue(e1,
+										KEY_PRESSURE)
+										.toString());  
+						BMP_pressureSubscriber.mAltitude = Double
+								.parseDouble(parser.getValue(e1,
+										KEY_ALTITUDE)
+										.toString());  
+
+					/*	System.out.println("id:"
+								+ BMP_pressureSubscriber.mId);
+						System.out
+								.println("temprature:"
+										+ BMP_pressureSubscriber.mTemperature);
+						System.out
+								.println("pressure:"
+										+ BMP_pressureSubscriber.mPressure);
+						System.out
+								.println("altitude:"
+										+ BMP_pressureSubscriber.mAltitude);*/
+					}
+
+					
 					continue;
 				}
 				/* Get the number of active conditions */
@@ -407,6 +463,7 @@ public class BMP_pressureSubscriber { // ---------------------------------------
 							mPressure = data.Pressure;
 							// System.out.println("Altitude: " + data.Altitude);
 							mAltitude = data.Altitude;
+
 						}
 						reader.return_loan(data_seq, info_seq);
 					} else if (active_conditions.get(i) == read_condition2) {

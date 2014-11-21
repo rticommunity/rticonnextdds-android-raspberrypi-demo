@@ -49,21 +49,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class AltitudeFragment extends Fragment implements OnClickListener {
+public  class AltitudeFragment extends Fragment implements OnClickListener  {
+
 
 	private static final String TIME = "H:mm:ss";
 	private static final String[] ITEMS = { "A", "B", "C", "D", "E", "F" };
-
-	private final int[] COLORS = { Color.RED, Color.YELLOW, Color.CYAN,
-			Color.GREEN, };
-
-	private static final int[] THRESHOLD_VALUES = { 550, 150, -2000 };
+ 
+	private final int[] COLORS =  {Color.RED, Color.YELLOW, Color.CYAN, Color.GREEN,  };
+	 
+	private static final int[] THRESHOLD_VALUES = {550,150,-2000};
 	private double mYAxisMin = -2200;
 	private double mYAxisMax = 600;
-	private static final int[] THRESHOLD_COLORS = { Color.RED, Color.GREEN,
-		Color.YELLOW };
-	private static final String[] THRESHOLD_LABELS = { "Very high altitude",
-		"Normal altitude", "Very low altitude" };
+	private static final int[] THRESHOLD_COLORS = { Color.RED, Color.GREEN, Color.YELLOW  };
+	private static final String[] THRESHOLD_LABELS = { "Very high altitude", "Normal altitude", "Very low altitude" };
 
 	private static final int TEN_SEC = 10000;
 	private static final int TWO_SEC = 2000;
@@ -77,25 +75,25 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 	private HashMap<String, TimeSeries> mSeries;
 	private TimeSeries[] mThresholds;
 	private ArrayList<String> mItems;
-
+	
 	private double mZoomLevel = 1;
 	private double mLastItemChange;
-	private int mItemIndex = 5;
+	private int mItemIndex=5;
 	private int mYAxisPadding = 9;
+
 
 	private final CountDownTimer mTimer = new CountDownTimer(15 * 60 * 1000, 10) {
 		@Override
 		public void onTick(final long millisUntilFinished) {
 			addValue();
-
+  			 
 		}
 
 		@Override
-		public void onFinish() {
-		}
+		public void onFinish() {}
 	};
 
-	private final ZoomListener mZoomListener3 = new ZoomListener() {
+ 	private final ZoomListener mZoomListener3 = new ZoomListener() {
 		@Override
 		public void zoomReset() {
 			mZoomLevel = 1;
@@ -106,7 +104,8 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		public void zoomApplied(final ZoomEvent event) {
 			if (event.isZoomIn()) {
 				mZoomLevel /= 2;
-			} else {
+			}
+			else {
 				mZoomLevel *= 2;
 			}
 			scrollGraph(new Date().getTime());
@@ -126,39 +125,38 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		mRenderer.setLabelsTextSize(22);
 		mRenderer.setLegendTextSize(22);
 		mRenderer.setPointSize(8f);
-		mRenderer.setXLabelsAlign(Align.CENTER);
+	 	mRenderer.setXLabelsAlign(Align.CENTER);
 		mRenderer.setYLabelsAlign(Align.CENTER);
 
-		mRenderer.setChartTitle("Live Altitude from RaspberryPi ("
-				+ BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) "
-				+ "\nat Temperature " + BMP_pressureSubscriber.mTemperature
-				+ " Celsius and Pressure " + BMP_pressureSubscriber.mPressure
-				+ " kPa");
-
+	 
+	 mRenderer.setChartTitle("Live Altitude from RaspberryPi ("+ BMP_pressureSubscriber.mId +") Barometric Sensor (BMP085) " +
+	 		"\nat Temperature "+  BMP_pressureSubscriber.mTemperature + " Celsius and Pressure "+ BMP_pressureSubscriber.mPressure +" kPa");
+			
 		mRenderer.setXTitle("In Real Time...");
 		mRenderer.setYTitle("Altitude (meters)");
 		mRenderer.setLabelsColor(Color.LTGRAY);
 		mRenderer.setAxesColor(Color.LTGRAY);
 		mRenderer.setGridColor(Color.rgb(136, 136, 136));
 		mRenderer.setBackgroundColor(Color.BLACK);
-
+		 
 		mRenderer.setApplyBackgroundColor(true);
 
-		mRenderer.setMargins(new int[] { 60, 60, 60, 60 });
+	 	mRenderer.setMargins(new int[] {60, 60, 60, 60 });
 
 		mRenderer.setFitLegend(true);
 		mRenderer.setShowGrid(true);
-
+		
 		mRenderer.setZoomButtonsVisible(false);
-		mRenderer.setZoomEnabled(true);
-		mRenderer.setExternalZoomEnabled(true);
-
+ 		mRenderer.setZoomEnabled(true);
+ 	 	mRenderer.setExternalZoomEnabled(true);
+ 	 
+	 	
 		mRenderer.setAntialiasing(true);
 		mRenderer.setInScroll(true);
 
 		mLastItemChange = new Date().getTime();
 		mItemIndex = 5;// Math.abs(RAND.nextInt(ITEMS.length));
-
+		
 		mThresholds = new TimeSeries[3];
 		mThresholdRenderers = new XYSeriesRenderer[3];
 
@@ -169,53 +167,48 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 
 			mThresholds[i] = new TimeSeries(THRESHOLD_LABELS[i]);
 			final long now = new Date().getTime();
-			mThresholds[i].add(new Date(now - 1000 * 60 * 10),
-					THRESHOLD_VALUES[i]);
-			mThresholds[i].add(new Date(now + 1000 * 60 * 10),
-					THRESHOLD_VALUES[i]);
-
+			mThresholds[i].add(new Date(now - 1000 * 60 * 10), THRESHOLD_VALUES[i]);
+			mThresholds[i].add(new Date(now + 1000 * 60 * 10), THRESHOLD_VALUES[i]);
+	
 			mDataset.addSeries(mThresholds[i]);
 			mRenderer.addSeriesRenderer(mThresholdRenderers[i]);
 		}
-
+		
 	}
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater,
-			final ViewGroup container, final Bundle savedInstanceState) {
-		if (Configuration.ORIENTATION_PORTRAIT == getResources()
-				.getConfiguration().orientation) {
-			mYAxisPadding = 9;
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
+ 			mYAxisPadding = 9;
 			mRenderer.setYLabels(30);
-		}
-
-		final LinearLayout view = (LinearLayout) inflater.inflate(
-				R.layout.fragment_altitude, container, false);
-
-		mChartView = ChartFactory.getTimeChartView(getActivity(), mDataset,
-				mRenderer, TIME);
-		mChartView.addZoomListener(mZoomListener3, true, false);
-		view.addView(mChartView, new LayoutParams(
-				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
+	}
+ 
+	  final LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_altitude, container, false);
+			
+		mChartView = ChartFactory.getTimeChartView(getActivity(), mDataset, mRenderer, TIME);
+	 	mChartView.addZoomListener(mZoomListener3, true, false);
+		view.addView(mChartView, new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+ 
 		return view;
 	}
 
-	// @Override
+
+	//@Override
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+ 	
 		mViewZoomIn3 = getActivity().findViewById(R.id.zoom_in3);
 		mViewZoomOut3 = getActivity().findViewById(R.id.zoom_out3);
 		mViewZoomReset3 = getActivity().findViewById(R.id.zoom_reset3);
 		mViewZoomIn3.setOnClickListener(this);
 		mViewZoomOut3.setOnClickListener(this);
 		mViewZoomReset3.setOnClickListener(this);
-
+		
 		mTimer.start();
 	}
+	
+ 
 
 	@Override
 	public void onStop() {
@@ -225,43 +218,39 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		}
 	}
 
+ 
+
 	private void addValue() {
+		
+		//Subscriber to Temprature Value here
 
-		// Subscriber to Temprature Value here
-
+ 
 		DecimalFormat newFormat = new DecimalFormat("#.###");
-		double mAltitude_t = Double.valueOf(newFormat
-				.format(BMP_pressureSubscriber.mAltitude));
-
-		final double value = mAltitude_t;
+		double mAltitude_t =  Double.valueOf(newFormat.format(BMP_pressureSubscriber.mAltitude));
+		 
+		 final double value = mAltitude_t;
 		/*
-		 * System.out.println("TemperatureFragment:mId: " + mId);
-		 * System.out.println("TemperatureFragment:mTemperature: " +
-		 * mTemperature); System.out.println("TemperatureFragment:mPressure: " +
-		 * mPressure); System.out.println("TemperatureFragment:mAltitude: " +
-		 * mAltitude);
-		 */
-		mRenderer.setChartTitle("Live Altitude from RaspberryPi ("
-				+ BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) "
-				+ "\nat Temperature " + BMP_pressureSubscriber.mTemperature
-				+ " Celsius and Pressure " + BMP_pressureSubscriber.mPressure
-				+ " kPa");
-
-		if (mYAxisMin > value)
-			mYAxisMin = value;
-		if (mYAxisMax < value)
-			mYAxisMax = value;
+		System.out.println("TemperatureFragment:mId: " + mId);
+		System.out.println("TemperatureFragment:mTemperature: " + mTemperature);
+		System.out.println("TemperatureFragment:mPressure: " + mPressure);
+		System.out.println("TemperatureFragment:mAltitude: " + mAltitude);
+		*/
+		 mRenderer.setChartTitle("Live Altitude from RaspberryPi (" + BMP_pressureSubscriber.mId + ") Barometric Sensor (BMP085) " +
+			 		"\nat Temperature "+ BMP_pressureSubscriber.mTemperature + " Celsius and Pressure "+ BMP_pressureSubscriber.mPressure +" kPa");
+		 
+		if (mYAxisMin > value) mYAxisMin = value;
+		if (mYAxisMax < value) mYAxisMax = value;
 
 		final Date now = new Date();
 		final long time = now.getTime();
 
 		if (time - mLastItemChange > 10000) {
 			mLastItemChange = time;
-			mItemIndex = 5; // Math.abs(RAND.nextInt(ITEMS.length));
+			mItemIndex = 5; //Math.abs(RAND.nextInt(ITEMS.length));
 		}
 
 		final String item = ITEMS[mItemIndex];
-		final int color = COLORS[2]; // w.r.t number of colors
+		final int color = COLORS[2]; //w.r.t number of colors
 		final int lastItemIndex = mItems.lastIndexOf(item);
 		mItems.add(item);
 
@@ -275,23 +264,23 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 			}
 			if (otherItemBetween) {
 				addSeries(null, now, value, item, color);
-			} else {
+			}
+			else {
 				mSeries.get(item).add(now, value);
 			}
-		} else {
+		}
+		else {
 			addSeries(item, now, value, item, color);
 		}
 
 		mChartView.repaint();
 		scrollGraph(time);
-
+	 
 	}
 
-	private void addSeries(final String title, final Date time,
-			final double value, final String item, final int color) {
+	private void addSeries(final String title, final Date time, final double value, final String item, final int color) {
 		for (int i = 0; i < THRESHOLD_COLORS.length; i++) {
-			mThresholds[i].add(new Date(time.getTime() + 1000 * 60 * 5),
-					THRESHOLD_VALUES[i]);
+			mThresholds[i].add(new Date(time.getTime() + 1000 * 60 * 5), THRESHOLD_VALUES[i]);
 		}
 
 		final TimeSeries series = new TimeSeries(title);
@@ -301,12 +290,12 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		mRenderer.addSeriesRenderer(getSeriesRenderer(color));
 	}
 
+	
 	private void scrollGraph(final long time) {
-		final double[] limits = new double[] { time - TEN_SEC * mZoomLevel,
-				time + TWO_SEC * mZoomLevel, mYAxisMin - mYAxisPadding,
-				mYAxisMax + mYAxisPadding };
-		mRenderer.setRange(limits);
-	}
+	final double[] limits = new double[] { time - TEN_SEC * mZoomLevel, time + TWO_SEC * mZoomLevel, mYAxisMin - mYAxisPadding,
+			mYAxisMax + mYAxisPadding };
+	mRenderer.setRange(limits);
+}
 
 	private XYSeriesRenderer getSeriesRenderer(final int color) {
 		final XYSeriesRenderer r = new XYSeriesRenderer();
@@ -319,10 +308,11 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		return r;
 	}
 
+
 	@Override
 	public void onClick(final View v) {
 
-		switch (v.getId()) {
+	switch (v.getId()) {
 		case R.id.zoom_in3:
 			mChartView.zoomIn();
 			break;
@@ -340,5 +330,5 @@ public class AltitudeFragment extends Fragment implements OnClickListener {
 		}
 
 	}
-
-}
+	
+	}
