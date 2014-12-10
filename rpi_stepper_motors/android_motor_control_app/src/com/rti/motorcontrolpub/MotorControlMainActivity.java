@@ -169,57 +169,49 @@ public class MotorControlMainActivity extends Activity {
 						ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
 				httpClient.getParams().getParameter("http.protocol.version");
 
-				// if (MotorControlPublisher.Pub_sub_create_count_http == 1) {
+ Thread t = new Thread(new Runnable() {
+	@Override
+	public void run() {
+		// replace with your url
+		StringEntity se = null;
+		httppost = new HttpPost(
+				"http://87.82.193.136:8080/dds/rest1/applications/LED_Demo/participants/LEDs/publishers/MyPublisher/datawriters/MyMCWriter");
+		try {
+			se = new StringEntity(
+					"<MotorControl><motor_id>"
+							+ MotorControlMainActivity.mMotor_id
+							+ "</motor_id><time_sec>"
+							+ MotorControlMainActivity.mTime_sec
+							+ "</time_sec><direction>"
+							+ MotorControlMainActivity.mDirection
+							+ "</direction><speed>"
+							+ MotorControlMainActivity.mSpeed
+							+ "</speed><action>0</action></MotorControl>",
+					"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("POST: " + se);
+		se.setContentType("application/webdds+xml");
+		httppost.addHeader("Cache-Control", "no-cache");
+		 
+		httppost.setEntity(se);
+		try {
+			httpClient.execute(httppost);
+		}
 
-				Thread t = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// replace with your url
-						StringEntity se = null;
-						HttpPost httppost = new HttpPost(
-								"http://87.82.193.136:8080/dds/rest1/types");
-						se = null;
+		catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-						// HttpPost
-						httppost = new HttpPost(
-								"http://87.82.193.136:8080/dds/rest1/applications/LED_Demo/participants/LEDs/publishers/MyPublisher/datawriters/MyMCWriter");
-						try {
-							se = new StringEntity(
-									"<MotorControl><motor_id>"
-											+ MotorControlMainActivity.mMotor_id
-											+ "</motor_id><time_sec>"
-											+ MotorControlMainActivity.mTime_sec
-											+ "</time_sec><direction>"
-											+ MotorControlMainActivity.mDirection
-											+ "</direction><speed>"
-											+ MotorControlMainActivity.mSpeed
-											+ "</speed><action>0</action></MotorControl>",
-									"UTF-8");
-						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						System.out.println("POST: " + se);
-						se.setContentType("application/xml");
-						httppost.setEntity(se);
-						try {
-							httpClient.execute(httppost);
-						}
-
-						catch (ClientProtocolException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-				});// end thread
-				// MotorControlPublisher.Pub_sub_create_count_http = 0;
-				t.start();
-				// }
-				// End code for WebDDS HTTP POST //
+	}
+});
+ t.start();
 
 				final TextView mTextField = (TextView) findViewById(R.id.textView4);
 
@@ -386,7 +378,7 @@ public class MotorControlMainActivity extends Activity {
 				MjpegActivity x = new MjpegActivity();
 				// (e.g. x.new A() where x is an instance of MjpegActivity).
 				x.new DoRead().execute(URL);
-				// new DoRead().execute(MotorControlMainActivity.URL);
+
 				suspending = false;
 			}
 		}
@@ -394,15 +386,11 @@ public class MotorControlMainActivity extends Activity {
 	}
 
 	public void onStart() {
-		// MotorControlPublisher.Pub_sub_create_count_http = 1;
-		// if(DEBUG) Log.d(TAG,"onStart()");
 		super.onStart();
 	}
 
 	public void onPause() {
-		// MotorControlPublisher.Pub_sub_create_count_http = 1;
-		// if(DEBUG) Log.d(TAG,"onPause()");
-		super.onPause();
+	      super.onPause();
 		if (mv != null) {
 			if (mv.isStreaming()) {
 				mv.stopPlayback();
@@ -412,15 +400,11 @@ public class MotorControlMainActivity extends Activity {
 	}
 
 	public void onStop() {
-		// MotorControlPublisher.Pub_sub_create_count_http = 1;
-		// if(DEBUG) Log.d(TAG,"onStop()");
-		super.onStop();
+ 		super.onStop();
 	}
 
 	public void onDestroy() {
-		// if(DEBUG) Log.d(TAG,"onDestroy()");
-		// MotorControlPublisher.Pub_sub_create_count_http = 1;
-		if (mv != null) {
+	 	if (mv != null) {
 			mv.freeCameraMemory();
 		}
 
@@ -428,4 +412,3 @@ public class MotorControlMainActivity extends Activity {
 	}
 
 }
-

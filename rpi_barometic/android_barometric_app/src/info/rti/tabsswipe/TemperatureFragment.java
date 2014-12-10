@@ -25,6 +25,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -35,12 +37,14 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.tools.ZoomEvent;
 import org.achartengine.tools.ZoomListener;
+import org.w3c.dom.NodeList;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.renderscript.Element;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -234,7 +238,8 @@ public class TemperatureFragment extends Fragment implements OnClickListener {
 	}
 
 	private void addValue() {
-
+  
+		
 		final double value = BMP_pressureSubscriber.mTemperature;
 		/*
 		 * System.out.println("TemperatureFragment:mId: " + mId);

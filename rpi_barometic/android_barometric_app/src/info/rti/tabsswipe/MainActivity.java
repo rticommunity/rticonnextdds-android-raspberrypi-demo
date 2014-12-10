@@ -19,61 +19,69 @@
 
 package info.rti.tabsswipe;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import info.rti.example.liveTemp.R;
 import info.rti.tabsswipe.adapter.TabsPagerAdapter;
+
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.w3c.dom.NodeList;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.renderscript.Element;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-
+ 
+ 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
-
+		ActionBar.TabListener { 
+ 	
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-
+ 
 	// Tab titles
-	private String[] tabs = { "Temperature", "Pressure", "Altitude" };
+	private String[] tabs = {"Temperature", "Pressure", "Altitude"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+	 
 		setContentView(R.layout.activity_main);
-
-		// Starting DDS subscriber as separate threaded task...
-		if (BMP_pressureSubscriber.Pub_sub_create_count == 1) {
-			ExecutorService service = Executors.newFixedThreadPool(4);
-			service.submit(new Runnable() {
-				@Override
+		 
+		//Starting DDS subscriber as separate threaded task...
+		if (BMP_pressureSubscriber.Pub_sub_create_count==1) {
+		ExecutorService service = Executors.newFixedThreadPool(4);
+		 service.submit(new Runnable() {
+		        @Override
 				public void run() {
-					String[] args = {}; // {"0", "2"};
-					BMP_pressureSubscriber.main(args);
-				}
-			});
-			BMP_pressureSubscriber.Pub_sub_create_count = 0;
+		        	String[] args = {}; // {"0", "2"};
+		    		BMP_pressureSubscriber.main(args);		 
+		        }
+		    });
+		 BMP_pressureSubscriber.Pub_sub_create_count=0;
 		}
-
-		// System.out.println("Pressure_high 0: " + mPressure_high);
-		// System.out.println("Pressure_low 0: " + mPressure_low);
-
-		// Initilization
+		 
+ 
+		//System.out.println("Pressure_high 0: " + mPressure_high);
+ 	 	// System.out.println("Pressure_low 0: " + mPressure_low);
+		
+		
+		
+		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
 		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);		
+	 
 		// Adding Tabs
 		for (String tab_name : tabs) {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
@@ -103,9 +111,11 @@ public class MainActivity extends FragmentActivity implements
 
 	}
 
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {	
+	
+	
 	}
 
 	@Override
@@ -113,12 +123,13 @@ public class MainActivity extends FragmentActivity implements
 		// on tab selected
 		// show respected fragment view
 		viewPager.setCurrentItem(tab.getPosition());
-
+ 
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-
+ 
+		
 	}
 
 }

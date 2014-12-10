@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>MotorControlMainActivity</name>
-	<comment></comment>
+	<name>MotorControlPublisher</name>
+	<comment>
+    </comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -30,4 +31,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>libs/nddsjava.jar</name>
+			<type>1</type>
+			<location>/home/rti/RTI/ndds.5.1.0/class/nddsjava.jar</location>
+		</link>
+	</linkedResources>
 </projectDescription>
